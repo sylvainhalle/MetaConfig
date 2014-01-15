@@ -1,0 +1,203 @@
+<xml>
+    <Device version="12" name="Pomerol">
+        <DeviceCommand negated="false" name="version" ref_cmd="1">
+            <DeviceParameter name="num_version" ref_param="1">
+                <Value>12</Value>
+            </DeviceParameter>
+        </DeviceCommand>
+        <DeviceCommand negated="false" name="hostname" ref_cmd="2">
+            <DeviceParameter name="name" ref_param="2">
+                <Value>Pomerol</Value>
+            </DeviceParameter>
+        </DeviceCommand>
+
+        <DeviceCommand negated="false" name="ip cef" ref_cmd="0" >
+            <!-- http://www.cisco.com/en/US/docs/ios/12_2/switch/configuration/guide/xcfcefc.html -->
+            <DeviceParameter name="distributed" ref_param="0" />
+            <DeviceParameter name="load-sharing algorithm original" ref_param="0" />
+            <DeviceParameter name="load-sharing algorithm tunnel" ref_param="0" />
+            <DeviceParameter name="load-sharing algorithm tunnel id" ref_param="0" />
+        </DeviceCommand>
+
+        <!-- Loopback 0 -->
+        <DeviceCommand negated="false" name="interface" ref_cmd="3">
+            <DeviceParameter name="name" ref_param="3">
+                <Value>Loopback0</Value>
+            </DeviceParameter>
+            <DeviceParameter name="option" ref_param="4" />
+            <DeviceCommand negated="false" name="ip address" ref_cmd="4">
+                <DeviceParameter name="ip" ref_param="5">
+                    <Value>10.10.10.3</Value>
+                </DeviceParameter>
+                <DeviceParameter name="mask" ref_param="6">
+                    <Value>255.255.255.255</Value>
+                </DeviceParameter>
+                <DeviceParameter name="secondary" ref_param="7" />
+            </DeviceCommand>
+            <DeviceCommand negated="false" name="ip router isis" ref_cmd="5">
+                <DeviceParameter name="area-tag" ref_param="8" />
+            </DeviceCommand>
+        </DeviceCommand>
+
+        <!-- Serial 0/1 -->
+        <DeviceCommand negated="false" name="interface" ref_cmd="3">
+            <DeviceParameter name="name" ref_param="3">
+                <Value>Serial0/1</Value>
+            </DeviceParameter>
+            <DeviceParameter name="option" ref_param="4" />
+            <DeviceCommand negated="true" name="ip address" ref_cmd="4">
+                <DeviceParameter name="ip" ref_param="5" />
+                <DeviceParameter name="mask" ref_param="6" />
+                <DeviceParameter name="secondary" ref_param="7" />
+            </DeviceCommand>
+            <DeviceCommand negated="true" name="ip directed-broadcast" ref_cmd="6">
+                <DeviceParameter name="access-list-number" ref_param="9" />
+            </DeviceCommand>
+            <DeviceCommand negated="false" name="encapsulation" ref_cmd="7">
+                <DeviceParameter name="encapsulation-type" ref_param="10">
+                    <Value>frame-relay</Value>
+                </DeviceParameter>
+            </DeviceCommand>
+            <!-- http://www.cisco.com/en/US/docs/ios/12_2/qos/configuration/guide/qcfwred_ps1835_TSD_Products_Configuration_Guide_Chapter.html -->
+            <DeviceCommand negated="false" name="random-detect" ref_cmd="8" />
+        </DeviceCommand>
+
+        <!-- Serial 0/1.1 point to point -->
+        <DeviceCommand negated="false" name="interface" ref_cmd="3">
+            <DeviceParameter name="name" ref_param="3">
+                <Value>Serial0/1.1</Value>
+            </DeviceParameter>
+            <DeviceParameter name="option" ref_param="4">
+                <Value>point-to-point</Value>
+            </DeviceParameter>
+            <DeviceParameter name="description" ref_param="0" >
+                <Value>link to Pauillac</Value>
+            </DeviceParameter>
+            <DeviceCommand negated="false" name="ip address" ref_cmd="4">
+                <DeviceParameter name="ip" ref_param="5">
+                    <Value>10.1.1.6</Value>
+                </DeviceParameter>
+                <DeviceParameter name="mask" ref_param="6">
+                    <Value>255.255.255.252</Value>
+                </DeviceParameter>
+                <DeviceParameter name="secondary" ref_param="7" />
+            </DeviceCommand>
+            <DeviceCommand negated="true" name="ip directed-broadcast" ref_cmd="6">
+                <DeviceParameter name="access-list-number" ref_param="9" />
+            </DeviceCommand>
+            <DeviceCommand negated="false" name="ip router isis" ref_cmd="5">
+                <DeviceParameter name="area-tag" ref_param="8" />
+            </DeviceCommand>
+            <DeviceCommand negated="false" name="tag-switching" ref_cmd="10">
+                <DeviceParameter name="type" ref_param="12">
+                    <Value>mtu</Value>
+                </DeviceParameter>
+                <DeviceParameter name="name" ref_param="13">
+                    <Value>1520</Value>
+                </DeviceParameter>
+            </DeviceCommand>
+            <DeviceCommand negated="false" name="tag-switching" ref_cmd="10">
+                <DeviceParameter name="type" ref_param="12">
+                    <Value>ip</Value>
+                </DeviceParameter>
+                <DeviceParameter name="name" ref_param="13"/>
+            </DeviceCommand>
+            <DeviceCommand negated="false" name="frame-relay" ref_cmd="11">
+                <GenericParameter name="interface-dlci" uid="0"/>
+                <GenericParameter name="value" uid="0">301</GenericParameter>
+            </DeviceCommand>
+        </DeviceCommand>
+
+        <!-- Serial 0/1.2 point to point -->
+        <DeviceCommand negated="false" name="interface" ref_cmd="3">
+            <DeviceParameter name="name" ref_param="3">
+                <Value>Serial0/1.2</Value>
+            </DeviceParameter>
+            <DeviceParameter name="option" ref_param="4">
+                <Value>point-to-point</Value>
+            </DeviceParameter>
+            <DeviceParameter name="description" ref_param="0" >
+                <Value>link to Pulligny</Value>
+            </DeviceParameter>
+            <DeviceCommand negated="false" name="ip address" ref_cmd="4">
+                <DeviceParameter name="ip" ref_param="5">
+                    <Value>10.1.1.9</Value>
+                </DeviceParameter>
+                <DeviceParameter name="mask" ref_param="6">
+                    <Value>255.255.255.252</Value>
+                </DeviceParameter>
+                <DeviceParameter name="secondary" ref_param="7" />
+            </DeviceCommand>
+            <DeviceCommand negated="true" name="ip directed-broadcast" ref_cmd="6">
+                <DeviceParameter name="access-list-number" ref_param="9" />
+            </DeviceCommand>
+            <DeviceCommand negated="false" name="ip router isis" ref_cmd="5">
+                <DeviceParameter name="area-tag" ref_param="8" />
+            </DeviceCommand>
+            <DeviceCommand negated="false" name="tag-switching" ref_cmd="10">
+                <DeviceParameter name="type" ref_param="12">
+                    <Value>ip</Value>
+                </DeviceParameter>
+                <DeviceParameter name="name" ref_param="13"/>
+            </DeviceCommand>
+            <DeviceCommand negated="false" name="frame-relay" ref_cmd="11">
+                <GenericParameter name="interface-dlci" uid="0"/>
+                <GenericParameter name="value" uid="0">303</GenericParameter>
+            </DeviceCommand>
+        </DeviceCommand>
+
+        <!-- Serial 0/1.3 point to point -->
+        <DeviceCommand negated="false" name="interface" ref_cmd="3">
+            <DeviceParameter name="name" ref_param="3">
+                <Value>Serial0/1.3</Value>
+            </DeviceParameter>
+            <DeviceParameter name="option" ref_param="4">
+                <Value>point-to-point</Value>
+            </DeviceParameter>
+            <DeviceParameter name="description" ref_param="0" >
+                <Value>link to Pesaro</Value>
+            </DeviceParameter>
+            <DeviceCommand negated="false" name="ip address" ref_cmd="4">
+                <DeviceParameter name="ip" ref_param="5">
+                    <Value>10.1.1.21</Value>
+                </DeviceParameter>
+                <DeviceParameter name="mask" ref_param="6">
+                    <Value>255.255.255.252</Value>
+                </DeviceParameter>
+                <DeviceParameter name="secondary" ref_param="7" />
+            </DeviceCommand>
+            <DeviceCommand negated="true" name="ip directed-broadcast" ref_cmd="6">
+                <DeviceParameter name="access-list-number" ref_param="9" />
+            </DeviceCommand>
+            <DeviceCommand negated="false" name="ip router isis" ref_cmd="5">
+                <DeviceParameter name="area-tag" ref_param="8" />
+            </DeviceCommand>
+            <DeviceCommand negated="false" name="tag-switching" ref_cmd="10">
+                <DeviceParameter name="type" ref_param="12">
+                    <Value>ip</Value>
+                </DeviceParameter>
+                <DeviceParameter name="name" ref_param="13"/>
+            </DeviceCommand>
+            <DeviceCommand negated="false" name="frame-relay" ref_cmd="11">
+                <GenericParameter name="interface-dlci" uid="0"/>
+                <GenericParameter name="value" uid="0">306</GenericParameter>
+            </DeviceCommand>
+        </DeviceCommand>
+
+        <DeviceCommand negated="false" name="router isis" ref_cmd="12">
+            <DeviceCommand negated="false" name="net" ref_cmd="13">
+                <DeviceParameter name="????" ref_param="0" >
+                    <Value>49.0001.0000.0000.0003.00</Value>
+                </DeviceParameter>
+            </DeviceCommand>
+            <DeviceCommand negated="false" name="is-type" ref_cmd="14">
+                <DeviceParameter name="level" ref_param="12">
+                    <Value>level-1</Value>
+                </DeviceParameter>
+            </DeviceCommand>
+        </DeviceCommand>
+
+        <DeviceCommand negated="false" name="ip classless" ref_cmd="15" />
+        <DeviceCommand negated="false" name="end" ref_cmd="16" />
+    </Device>
+</xml>
