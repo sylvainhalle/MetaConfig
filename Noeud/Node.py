@@ -30,6 +30,9 @@ class Node(object):
 
     def setAlias(self, alias):
         self.alias = alias
+    
+    def updateAlias(self):
+        self.alias.setValue(self.computedValue)
 
     def __str__(self):
         return "Node: uid:" + str(self.uidParam)
@@ -39,6 +42,7 @@ class NodeAnd(Node):
         Node.__init__(self, uid, childrens, conditions, alias)
     
     def compute(self):
+        Node.updateAlias(self)
         result = True
         for cond in self.conditions:
             print cond
@@ -53,6 +57,7 @@ class NodeOr(Node):
         Node.__init__(self, uid, childrens, conditions, alias)
         
     def compute(self):
+        Node.updateAlias(self)
         result = False
         for cond in self.conditions:
             result |= cond.compute()
@@ -70,6 +75,17 @@ class Alias(object):
         Constructeur
         '''
         self.name = name
+        self.currentValue = None
+    
+    def setValue(self, currentValue):
+        self.currentValue = currentValue
+    
+    def getValue(self):
+        if self.currentValue != None:
+            return self.currentValue
+        else:
+            print "Erreur valeur alias non definie:" + str(self)
+            return 0
 
     def __str__(self):
         return str(self.name)
@@ -145,8 +161,7 @@ class AtomicAliasTerm(AbstractTerm):
     
     def compute(self):
         print "Compute the node "+ str(self.alias)
-        '''TODO: Recuperer la valeur d'apres l'alias'''
-        return 0
+        return self.alias.getValue()
 
 class AtomicConstantTerm(AbstractTerm):
     '''
@@ -176,18 +191,14 @@ class Term(AbstractTerm):
     
     def compute(self):
         print "Evaluate", str(self)
-        if self.operateur == "==":
-            return self.term1.compute() == self.term2.compute()
-        elif self.operateur == "<":
-            return self.term1.compute() < self.term2.compute()
-        elif self.operateur == ">":
-            return self.term1.compute() > self.term2.compute()
-        elif self.operateur == "!=":
-            return self.term1.compute() != self.term2.compute()
-        elif self.operateur == "<=":
-            return self.term1.compute() <= self.term2.compute()
-        elif self.operateur == ">=":
-            return self.term1.compute() >= self.term2.compute()
+        if self.operateur == "+":
+            return self.term1.compute() + self.term2.compute()
+        elif self.operateur == "-":
+            return self.term1.compute() - self.term2.compute()
+        elif self.operateur == "*":
+            return self.term1.compute() * self.term2.compute()
+        elif self.operateur == "/":
+            return self.term1.compute() / self.term2.compute()
         else:
             return False    
 
