@@ -30,7 +30,7 @@ class Node(object):
 
     def setAlias(self, alias):
         self.alias = alias
-    
+
     def updateAlias(self):
         self.alias.setValue(self.computedValue)
 
@@ -40,13 +40,16 @@ class Node(object):
 class NodeAnd(Node):
     def __init__(self, uid, childrens = [], conditions = [], alias = None):
         Node.__init__(self, uid, childrens, conditions, alias)
-    
+
     def compute(self):
         Node.updateAlias(self)
         result = True
-        for cond in self.conditions:
+        for cond in self.conditions:      #On commence par verifier l'ensemble des conditions liees a ce noeud
             print cond
-            result &= cond.compute()
+            result &= cond.compute()      #les conditions sont toujours separees par des 'et'
+        if result:                        #Si les conditions sont verifiees, on peut passer a la verification des enfants
+            for child in self.childs:
+                result &= child.compute() #C'est un noeud 'et' (pour tout) donc c'est TOUS les enfants qui doivent etre vrais
         return result
 
     def __str__(self):
@@ -55,12 +58,17 @@ class NodeAnd(Node):
 class NodeOr(Node):
     def __init__(self, uid, childrens, conditions = [], alias = None):
         Node.__init__(self, uid, childrens, conditions, alias)
-        
+
     def compute(self):
         Node.updateAlias(self)
-        result = False
-        for cond in self.conditions:
-            result |= cond.compute()
+        result = True
+        for cond in self.conditions:      #On commence par verifier l'ensemble des conditions liees a ce noeud
+            print cond
+            result &= cond.compute()      #les conditions sont toujours separees par des 'et'
+        if result:                        #Si les conditions sont verifiees, on peut passer a la verification des enfants
+            result = False
+            for child in self.childs:
+                result |= child.compute() #C'est un noeud 'ou' (il existe) donc il suffit d'un enfant verifie pour que le resultat le soit
         return result
 
     def __str__(self):
@@ -76,10 +84,10 @@ class Alias(object):
         '''
         self.name = name
         self.currentValue = None
-    
+
     def setValue(self, currentValue):
         self.currentValue = currentValue
-    
+
     def getValue(self):
         if self.currentValue != None:
             return self.currentValue
@@ -120,7 +128,7 @@ class Condition(object):
     def setTerms(self, term1, term2):
         self.term1 = term1
         self.term2 = term2
-    
+
     def compute(self):
         print "Evaluate", str(self)
         if self.operateur == "==":
@@ -158,7 +166,7 @@ class AtomicAliasTerm(AbstractTerm):
 
     def __str__(self):
         return str(self.alias)
-    
+
     def compute(self):
         print "Compute the node "+ str(self.alias)
         return self.alias.getValue()
@@ -172,7 +180,7 @@ class AtomicConstantTerm(AbstractTerm):
 
     def __str__(self):
         return str(self.constant)
-    
+
     def compute(self):
         return self.constant
 
@@ -188,7 +196,7 @@ class Term(AbstractTerm):
     def setTerms(self, term1, term2):
         self.term1 = term1
         self.term2 = term2
-    
+
     def compute(self):
         print "Evaluate", str(self)
         if self.operateur == "+":
@@ -200,7 +208,7 @@ class Term(AbstractTerm):
         elif self.operateur == "/":
             return self.term1.compute() / self.term2.compute()
         else:
-            return False    
+            return False
 
     def __str__(self):
         return "(" + str(self.operator) + ":" + str(self.term1) + ","+ str(self.term2) + ")"
@@ -222,7 +230,7 @@ class CentralValidation(object):
 
     def addInterdependancy(self, interdependancy):
         self.interdependancies.append(interdependancy)
-        
+
     def compute(self):
         result = True
         for node in self.nodes:
