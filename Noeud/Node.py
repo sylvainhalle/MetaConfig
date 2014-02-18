@@ -32,11 +32,18 @@ class Node(object):
         self.alias = alias
 
     def __str__(self):
-        return "Node: uid:" + self.uidParam
+        return "Node: uid:" + str(self.uidParam)
 
 class NodeAnd(Node):
     def __init__(self, uid, childrens = [], conditions = [], alias = None):
         Node.__init__(self, uid, childrens, conditions, alias)
+    
+    def compute(self):
+        result = True
+        for cond in self.conditions:
+            print cond
+            result &= cond.compute()
+        return result
 
     def __str__(self):
         return "NodeAnd: uid:" + str(self.uidParam)
@@ -44,8 +51,15 @@ class NodeAnd(Node):
 class NodeOr(Node):
     def __init__(self, uid, childrens, conditions = [], alias = None):
         Node.__init__(self, uid, childrens, conditions, alias)
+        
+    def compute(self):
+        result = False
+        for cond in self.conditions:
+            result |= cond.compute()
+        return result
+
     def __str__(self):
-        return "NodeOr: uid:" + self.uidParam
+        return "NodeOr: uid:" + str(self.uidParam)
 
 class Alias(object):
     '''
@@ -58,7 +72,7 @@ class Alias(object):
         self.name = name
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 class Interdependancy(object):
     '''
@@ -76,7 +90,7 @@ class Interdependancy(object):
         aliasNames = ""
         for alias in self.aliasList:
             aliasNames += " " + alias.name
-        return "Interdependancy entre:" + aliasNames
+        return "Interdependancy entre:" + str(aliasNames)
 
 class Condition(object):
     '''
@@ -90,9 +104,26 @@ class Condition(object):
     def setTerms(self, term1, term2):
         self.term1 = term1
         self.term2 = term2
+    
+    def compute(self):
+        print "Evaluate", str(self)
+        if self.operateur == "==":
+            return self.term1.compute() == self.term2.compute()
+        elif self.operateur == "<":
+            return self.term1.compute() < self.term2.compute()
+        elif self.operateur == ">":
+            return self.term1.compute() > self.term2.compute()
+        elif self.operateur == "!=":
+            return self.term1.compute() != self.term2.compute()
+        elif self.operateur == "<=":
+            return self.term1.compute() <= self.term2.compute()
+        elif self.operateur == ">=":
+            return self.term1.compute() >= self.term2.compute()
+        else:
+            return False
 
     def __str__(self):
-        return "Condition: operateur:"+self.operateur+",terms:"+self.terms
+        return "Condition: operateur:"+str(self.operateur)+",terms:"+str(self.term1)+","+str(self.term2)
 
 class AbstractTerm(object):
     '''
@@ -100,6 +131,7 @@ class AbstractTerm(object):
     '''
     def compute(self):
         print "Compute the node..."
+        return 0
 
 class AtomicAliasTerm(AbstractTerm):
     '''
@@ -109,7 +141,12 @@ class AtomicAliasTerm(AbstractTerm):
         self.alias = alias
 
     def __str__(self):
-        return self.alias
+        return str(self.alias)
+    
+    def compute(self):
+        print "Compute the node "+ str(self.alias)
+        '''TODO: Recuperer la valeur d'apres l'alias'''
+        return 0
 
 class AtomicConstantTerm(AbstractTerm):
     '''
@@ -119,6 +156,9 @@ class AtomicConstantTerm(AbstractTerm):
         self.constant = constant
 
     def __str__(self):
+        return str(self.constant)
+    
+    def compute(self):
         return self.constant
 
 class Term(AbstractTerm):
@@ -133,9 +173,26 @@ class Term(AbstractTerm):
     def setTerms(self, term1, term2):
         self.term1 = term1
         self.term2 = term2
+    
+    def compute(self):
+        print "Evaluate", str(self)
+        if self.operateur == "==":
+            return self.term1.compute() == self.term2.compute()
+        elif self.operateur == "<":
+            return self.term1.compute() < self.term2.compute()
+        elif self.operateur == ">":
+            return self.term1.compute() > self.term2.compute()
+        elif self.operateur == "!=":
+            return self.term1.compute() != self.term2.compute()
+        elif self.operateur == "<=":
+            return self.term1.compute() <= self.term2.compute()
+        elif self.operateur == ">=":
+            return self.term1.compute() >= self.term2.compute()
+        else:
+            return False    
 
     def __str__(self):
-        return "(" + self.operator + ":" + self.terms + ")"
+        return "(" + str(self.operator) + ":" + str(self.term1) + ","+ str(self.term2) + ")"
 
 class CentralValidation(object):
     '''
@@ -154,12 +211,18 @@ class CentralValidation(object):
 
     def addInterdependancy(self, interdependancy):
         self.interdependancies.append(interdependancy)
+        
+    def compute(self):
+        result = True
+        for node in self.nodes:
+            result &= node.compute()
+        return result
 
     def __str__(self):
         affichage = "Central:\nNodes:"
         for node in self.nodes:
-            affichage += node.__str__()+"\n"
+            affichage += str(node) +"\n"
         affichage +="\nInterdependance:\n"
         for interdependance in self.interdependancies:
-            affichage += interdependance.__str__()+"\n"
+            affichage += str(interdependance)+"\n"
         return affichage

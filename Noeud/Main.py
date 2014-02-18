@@ -34,9 +34,10 @@ def main():
     interdep = Interdependancy([aliasY, aliasZ], [condition2])
 
     #Central validation (main class)
-    central = CentralValidation([interdep], [node1, node3])
+    central = CentralValidation([interdep], [node1, node2, node3])
 
-    print central.__str__()
+    print central
+    print central.compute()
 
     print "***           END              ***"
 
