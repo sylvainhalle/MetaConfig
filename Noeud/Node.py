@@ -3,6 +3,7 @@ Created on 8 fevr. 2014
 
 @author: Clement
 '''
+import copy
 
 class Node(object):
     '''
@@ -245,3 +246,23 @@ class CentralValidation(object):
         for interdependance in self.interdependancies:
             affichage += str(interdependance)+"\n"
         return affichage
+
+class LogicFormulaTree(object):
+    
+    def __init__(self, central, nodes = [], device):
+        self.central = central
+        self.nodes = []
+        for node in nodes:
+            self.nodes.append(node)
+        self.device = device
+        
+    def valuate(self):
+        print "Valuation de l'arbre"
+        #TODO: valuer l'arbre avec les valeurs des parametres du device
+
+    def getCopy(self):
+        #TODO: Return copy of the tree
+        return copy.deepcopy(self)
+
+    def compute(self):
+        self.node.compute()
