@@ -33,13 +33,13 @@ class IOSReference:
             genericCommand = GenericCommand(node)
             self.addGenericCommand(genericCommand)
 
-        printLog("Successfully loaded "+self.toString())
+        printLog("Successfully loaded "+self.__str__())
 
 
     def addGenericCommand(self, genericCommand):
         if (isinstance(genericCommand, GenericCommand)):
             self.genericCommandList.append(genericCommand)
 
-    def toString(self):
+    def __str__(self):
         return "IOSReference [lastUpdate="+str(self.lastUpdate)+", number_of_generic_commands="+str(self.genericCommandList.__len__())+"]"
 

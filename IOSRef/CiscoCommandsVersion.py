@@ -30,15 +30,15 @@ class CiscoCommandsVersion:
                 self.addCiscoSyntax(ciscoSyntax)
 
         from IOSReference import printLog
-        printLog("Created "+self.toString())
+        printLog("Created "+self.__str__())
 
 
     def addCiscoSyntax(self, ciscoSyntax):
         if (isinstance(ciscoSyntax, CiscoSyntax)):
             self.ciscoSyntaxList.append(ciscoSyntax)
 
-    def toString(self):
-        return "CiscoCommandsVersion [versionMin="+str(self.versionMin)+", versionMax="+str(self.versionMax)+", deviceType="+str(self.deviceType)+"]"
+    def __str__(self):
+        return "CiscoCommandsVersion [versionMin="+str(self.versionMin)+", versionMax="+str(self.versionMax)+", deviceType="+str(self.deviceType)+", number_of_cisco_syntaxes="+str(self.ciscoSyntaxList.__len__())+"]"
 
 
 
@@ -56,11 +56,11 @@ class CiscoSyntax:
                 self.addSyntaxTerm(syntaxTerm)
 
         from IOSReference import printLog
-        printLog("Created "+self.toString())
+        printLog("Created "+self.__str__())
 
     def addSyntaxTerm(self, syntaxTerm):
         if (isinstance(syntaxTerm, SyntaxTerm)):
             self.syntaxTermList.append(syntaxTerm)
 
-    def toString(self):
+    def __str__(self):
         return "CiscoSyntax [negatable="+str(self.negatable)+", number_of_syntax_terms="+str(self.syntaxTermList.__len__())+"]"

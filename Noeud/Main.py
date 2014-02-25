@@ -51,8 +51,8 @@ def main():
     node5 = Node(uid_c, [], [], aliasZ)            #neutral
     node4 = Node(uid_b, [], [condition1], aliasY)  #neutral
     node3 = NodeOr(uid_a, [node4], [], aliasX)
-    node2 = NodeAnd(0, [node5], [], None)
-    node1 = NodeAnd(0, [node3], [], None)
+    node2 = NodeAnd(0, [node5], [], None)           #no conditions and no aliases
+    node1 = NodeAnd(0, [node3], [], None)           #no conditions and no aliases
 
     #interdependancy between nodes 4 and 5
     interdep = Interdependancy([aliasY, aliasZ], [condition2])

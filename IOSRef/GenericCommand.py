@@ -24,10 +24,10 @@ class AuxiliarCommand:
             self.genericCommandNeeded = xmlNode.attributes['guid'].value
 
         from IOSReference import printLog
-        printLog("Created "+self.toString())
+        printLog("Created "+self.__str__())
 
 
-    def toString(self):
+    def __str__(self):
         return "AuxiliarCommand [versionMin="+str(self.versionMin)+", versionMax="+str(self.versionMax)+", uid_genericCommandNeeded="+str(self.genericCommandNeeded)+"]"
 
 
@@ -46,10 +46,10 @@ class GenericParameter:
             self.name = xmlNode.attributes['name'].value
 
         from IOSReference import printLog
-        printLog("Created "+self.toString())
+        printLog("Created "+self.__str__())
 
 
-    def toString(self):
+    def __str__(self):
         return "GenericParameter [uid="+str(self.uid)+", name='"+str(self.name)+"']"
 
 
@@ -85,7 +85,7 @@ class GenericCommand:
                 self.addAuxiliarCommand(auxiliarCommand)
 
         from IOSReference import printLog
-        printLog("Created "+self.toString())
+        printLog("Created "+self.__str__())
 
 
     def addCiscoCommandsVersion(self, ciscoCommandsVersion):
@@ -100,5 +100,5 @@ class GenericCommand:
         if (isinstance(genericParameter, GenericParameter)):
             self.genericParameterList.append(genericParameter)
 
-    def toString(self):
-        return "GenericCommand [uid="+str(self.uid)+", name='"+str(self.genericName)+"']"
+    def __str__(self):
+        return "GenericCommand [uid="+str(self.uid)+", name='"+str(self.genericName)+"', number_of_cisco_commands_versions="+str(self.ciscoCommandsVersionList.__len__())+", number_of_generic_parameters="+str(self.genericParameterList.__len__())+", number_of_auxiliar_commands="+str(self.auxiliarCommandList.__len__())+"]"

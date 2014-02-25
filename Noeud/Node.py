@@ -9,11 +9,11 @@ class Node(object):
     '''
     Node abstrait de l'arbre d'evaluation
     '''
-    def __init__(self, uid, childrens = [], conditions = [], alias = None, computedValue = None):
+    def __init__(self, uidParamOrCommand, childrens = [], conditions = [], alias = None, computedValue = None):
         '''
         Constructeur
         '''
-        self.uidParam = uid
+        self.uidParamOrCommand = uidParamOrCommand
         self.childs = []
         for child in childrens:
             self.childs.append(child)
@@ -35,12 +35,23 @@ class Node(object):
     def updateAlias(self):
         self.alias.setValue(self.computedValue)
 
+    # parent is the parent Node of this node (useful for adding brothers to this node)
+    # deviceNode can be the device itself (if we are at the level of the root) or a DeviceCommand, or a DeviceParameter
+    # this fonction browses the elements under the deviceNode, looking for uids matching this 'uidParamOrCommand'
+    def valuate(self, parent, deviceNode):
+        if (isinstance(deviceNode, Device)):
+            None
+        elif (isinstance(deviceNode, DeviceCommand)):
+            None
+        elif (isinstance(deviceNode, DeviceParameter)):
+            None
+
     def __str__(self):
-        return "Node: uid:" + str(self.uidParam)
+        return "Node: uidParamOrCommand:" + str(self.uidParamOrCommand)
 
 class NodeAnd(Node):
-    def __init__(self, uid, childrens = [], conditions = [], alias = None):
-        Node.__init__(self, uid, childrens, conditions, alias)
+    def __init__(self, uidParamOrCommand, childrens = [], conditions = [], alias = None):
+        Node.__init__(self, uidParamOrCommand, childrens, conditions, alias)
 
     def compute(self):
         Node.updateAlias(self)
@@ -54,11 +65,11 @@ class NodeAnd(Node):
         return result
 
     def __str__(self):
-        return "NodeAnd: uid:" + str(self.uidParam)
+        return "NodeAnd: uidParamOrCommand:" + str(self.uidParamOrCommand)
 
 class NodeOr(Node):
-    def __init__(self, uid, childrens, conditions = [], alias = None):
-        Node.__init__(self, uid, childrens, conditions, alias)
+    def __init__(self, uidParamOrCommand, childrens, conditions = [], alias = None):
+        Node.__init__(self, uidParamOrCommand, childrens, conditions, alias)
 
     def compute(self):
         Node.updateAlias(self)
@@ -73,7 +84,7 @@ class NodeOr(Node):
         return result
 
     def __str__(self):
-        return "NodeOr: uid:" + str(self.uidParam)
+        return "NodeOr: uidParamOrCommand:" + str(self.uidParamOrCommand)
 
 class Alias(object):
     '''
@@ -248,14 +259,14 @@ class CentralValidation(object):
         return affichage
 
 class LogicFormulaTree(object):
-    
+
     def __init__(self, central, nodes = [], device):
         self.central = central
         self.nodes = []
         for node in nodes:
             self.nodes.append(node)
         self.device = device
-        
+
     def valuate(self):
         print "Valuation de l'arbre"
         #TODO: valuer l'arbre avec les valeurs des parametres du device
