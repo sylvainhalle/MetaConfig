@@ -34,7 +34,13 @@ def main():
     '''
 
     #Device correspondant
-    device = None #TODO: load a device!!!!!!!!
+    device1 = None #TODO: load a real device!!!!!!!!
+    device2 = None #TODO: load a real device!!!!!!!!
+
+    #Central validation (main class)
+    central = CentralValidation()
+    central.addDevice(device1)
+    central.addDevice(device2)
 
     #alias x, y, z dans les noeuds
     aliasX = Alias("x")
@@ -64,10 +70,8 @@ def main():
     interdep = Interdependancy([aliasY, aliasZ], [condition2])
 
     #Formula tree
-    logicFormulaTree = LogicFormulaTree(None, [node1, node2])
-
-    #Central validation (main class)
-    central = CentralValidation([interdep], [logicFormulaTree])
+    logicFormulaTree = LogicFormulaTree([node1, node2], [interdep])
+    central.submitFormula(logicFormulaTree)
 
     print central
     central.valuate()  #import values of parameters from the device META-CLI
