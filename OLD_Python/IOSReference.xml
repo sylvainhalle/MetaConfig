@@ -1,0 +1,206 @@
+﻿<xml>
+<IOSReference lastUpdate="09/12/2013">
+	<GenericCommand genericName="version" uid="1">
+			<GenericParameter name="num_version" uid="1"/>
+			<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+					<CiscoSyntax negatable="false">
+							<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+									<CiscoKeyword word="version"/>
+									<CiscoParameter name="num_version" cardinalityMin="1" cardinalityMax="1" guid="1"/>
+							</SyntaxTerm>
+					</CiscoSyntax>
+			</CiscoCommandsVersion>
+	</GenericCommand>
+	<GenericCommand genericName="hostname" uid="2">
+			<GenericParameter name="name" uid="2"/>
+			<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+					<CiscoSyntax negatable="false">
+							<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+									<CiscoKeyword word="hostname"/>
+									<CiscoParameter name="name" cardinalityMin="1" cardinalityMax="1" guid="2"/>
+							</SyntaxTerm>
+					</CiscoSyntax>
+			</CiscoCommandsVersion>
+	</GenericCommand>
+	<GenericCommand genericName="interface" uid="3">
+			<GenericParameter name="name" uid="3"/>
+			<GenericParameter name="option" uid="4"/>
+			<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+					<CiscoSyntax negatable="false">
+							<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+									<CiscoKeyword word="interface"/>
+									<CiscoParameter name="name" cardinalityMin="1" cardinalityMax="2" guid="3"/>
+									<CiscoParameter name="option" cardinalityMin="0" cardinalityMax="1" guid="4"/>
+							</SyntaxTerm>
+					</CiscoSyntax>
+			</CiscoCommandsVersion>
+	</GenericCommand>
+	<GenericCommand genericName="ip address" uid="4">
+			<GenericParameter name="ip" uid="5"/>
+			<GenericParameter name="mask" uid="6"/>
+			<GenericParameter name="secondary" uid="7"/>
+			<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+				<CiscoSyntax negatable="true">
+					<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+						<CiscoKeyword word="ip address"/>
+						<CiscoParameter name="ip" cardinalityMin="1" cardinalityMax="1" guid="5"/>
+						<CiscoParameter name="mask" cardinalityMin="1" cardinalityMax="1" guid="6"/>
+						<CiscoParameter name="secondary" cardinalityMin="0" cardinalityMax="1" guid="7"/>
+					</SyntaxTerm>
+				</CiscoSyntax>
+			</CiscoCommandsVersion>
+			<AuxiliarCommand versionMin="all" versionMax="all" guid="3"/>
+	</GenericCommand>
+	<GenericCommand genericName="ip router isis" uid="5">
+			<GenericParameter name="area-tag" uid="8"/>
+			<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+				<CiscoSyntax negatable="true">
+					<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+						<CiscoKeyword word="ip router isis"/>
+						<CiscoParameter name="area-tag" cardinalityMin="0" cardinalityMax="1" guid="8"/>
+					</SyntaxTerm>
+				</CiscoSyntax>
+			</CiscoCommandsVersion>
+			<AuxiliarCommand versionMin="all" versionMax="all" guid="3"/>
+	</GenericCommand>
+	<GenericCommand genericName="ip directed-broadcast" uid="6">
+			<GenericParameter name="access-list-number" uid="9"/>
+			<CiscoCommandsVersion versionMin="10" versionMax="11" deviceType="all">
+				<CiscoSyntax negatable="true">
+					<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+						<CiscoKeyword word="ip directed-broadcast"/>
+						<CiscoParameter name="access-list-number" cardinalityMin="0" cardinalityMax="1" guid="9"/>
+					</SyntaxTerm>
+				</CiscoSyntax>
+			</CiscoCommandsVersion>
+			<CiscoCommandsVersion versionMin="12.0" versionMax="all" deviceType="all">
+				<CiscoSyntax negatable="true">
+						<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+								<CiscoKeyword word="ip directed-broadcast"/>
+								<CiscoParameter name="extended-access-list-number" cardinalityMin="0" cardinalityMax="1" guid="9"/>
+						</SyntaxTerm>
+				</CiscoSyntax>
+			</CiscoCommandsVersion>
+			<AuxiliarCommand versionMin="all" versionMax="all" guid="3"/>
+	</GenericCommand>
+	<GenericCommand genericName="encapsulation" uid="7">
+		<GenericParameter name="encapsulation-type" uid="10"/>
+		<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+			<CiscoSyntax negatable="true">
+				<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+					<CiscoKeyword word="encapsulation"/>
+					<CiscoParameter name="encapsulation-type" cardinalityMin="1" cardinalityMax="1" guid="10"/>
+				</SyntaxTerm>
+			</CiscoSyntax>
+		</CiscoCommandsVersion>
+		<AuxiliarCommand versionMin="all" versionMax="all" guid="3"/>
+	</GenericCommand>
+	<!-- http://www.cisco.com/en/US/docs/ios/12_2/qos/configuration/guide/qcfwred_ps1835_TSD_Products_Configuration_Guide_Chapter.html -->
+	<GenericCommand genericName="random-detect" uid="8">
+		<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+			<CiscoSyntax negatable="true">
+				<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+					<CiscoKeyword word="random-detect"/>
+				</SyntaxTerm>
+			</CiscoSyntax>
+		</CiscoCommandsVersion>
+		<AuxiliarCommand versionMin="all" versionMax="all" guid="3"/>
+	</GenericCommand>
+	<!-- http://www.cisco.com/en/US/docs/switches/lan/hubs/mhub1538m/cli/1538_CLI.html#wp37992 -->
+	<GenericCommand genericName="description" uid="9"> 
+		<GenericParameter name="name-string" uid="11"/>
+		<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+			<CiscoSyntax negatable="true">
+				<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+					<CiscoKeyword word="description"/>
+					<CiscoParameter name="name-string" cardinalityMin="1" cardinalityMax="1" uid="11"/>
+				</SyntaxTerm>
+			</CiscoSyntax>
+		</CiscoCommandsVersion>
+		<AuxiliarCommand versionMin="all" versionMax="all" guid="3"/>
+	</GenericCommand>
+	<GenericCommand genericName="tag-switching" uid="10">
+		<GenericParameter name="type" uid="12"/>
+		<GenericParameter name="value" uid="13"/>
+		<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+			<CiscoSyntax negatable="true">
+				<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+					<CiscoKeyword word="tag-switching"/>
+					<CiscoParameter name="type" cardinalityMin="1" cardinalityMax="1" type="list" guid="12"></CiscoParameter>
+					<CiscoParameter name="value" cardinalityMin="0" cardinalityMax="1" guid="13"/>
+				</SyntaxTerm>
+			</CiscoSyntax>
+		</CiscoCommandsVersion>
+		<AuxiliarCommand versionMin="all" versionMax="all" guid="3"/>
+	</GenericCommand>
+	<GenericCommand genericName="frame-relay" uid="11">
+		<GenericParameter name="map" uid="14"/>
+		<GenericParameter name="ip" uid="15"/>
+		<GenericParameter name="ip-value" uid="16"/>
+		<GenericParameter name="value-frame" uid="17"/>
+		<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+			<CiscoSyntax negatable="true">
+				<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+					<CiscoKeyword word="frame-relay"/>
+					<CiscoParameter name="map" cardinalityMin="0" cardinalityMax="1" guid="14"/>
+					<CiscoParameter name="ip" cardinalityMin="0" cardinalityMax="1" guid="15"/>
+					<CiscoParameter name="ip-value" cardinalityMin="1" cardinalityMax="1" guid="16"/>
+					<CiscoParameter name="value-frame" cardinalityMin="1" cardinalityMax="1" guid="17"/>
+				</SyntaxTerm>
+			</CiscoSyntax>
+		</CiscoCommandsVersion>
+		<AuxiliarCommand versionMin="all" versionMax="all" guid="3"/>
+	</GenericCommand>
+	<GenericCommand genericName="router isis" uid="12">
+		<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+			<CiscoSyntax negatable="true">
+				<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+					<CiscoKeyword word="router isis"/>
+				</SyntaxTerm>
+			</CiscoSyntax>
+		</CiscoCommandsVersion>
+	</GenericCommand>
+	<GenericCommand genericName="net" uid="13">
+		<GenericParameter name="value" uid="18"/>
+		<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+			<CiscoSyntax negatable="true">
+				<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+					<CiscoKeyword word="net"/>
+					<CiscoParameter name="value" cardinalityMin="1" cardinalityMax="1" guid="18"/>
+				</SyntaxTerm>
+			</CiscoSyntax>
+		</CiscoCommandsVersion>
+		<AuxiliarCommand versionMin="all" versionMax="all" guid="12"/>
+	</GenericCommand>
+	<GenericCommand genericName="is-type" uid="14">
+		<GenericParameter name="level" uid="19"/>
+		<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+			<CiscoSyntax negatable="true">
+				<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+					<CiscoKeyword word="is-type"/>
+					<CiscoParameter name="level" cardinalityMin="1" cardinalityMax="1" guid="19"/>
+				</SyntaxTerm>
+			</CiscoSyntax>
+		</CiscoCommandsVersion>
+		<AuxiliarCommand versionMin="all" versionMax="all" guid="12"/>
+	</GenericCommand>
+	<GenericCommand genericName="ip classless" uid="15">
+		<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+			<CiscoSyntax negatable="true">
+				<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+					<CiscoKeyword word="ip classless"/>
+				</SyntaxTerm>
+			</CiscoSyntax>
+		</CiscoCommandsVersion>
+	</GenericCommand>
+	<GenericCommand genericName="end" uid="16">
+		<CiscoCommandsVersion versionMin="all" versionMax="all" deviceType="all">
+			<CiscoSyntax negatable="true">
+				<SyntaxTerm cardinalityMin="1" cardinalityMax="1">
+					<CiscoKeyword word="end"/>
+				</SyntaxTerm>
+			</CiscoSyntax>
+		</CiscoCommandsVersion>
+	</GenericCommand>
+</IOSReference>
+</xml>
