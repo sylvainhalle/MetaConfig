@@ -30,12 +30,14 @@ def main():
  b=y (node4) [cond. x>y]
 
 
-
     '''
 
-    #Device correspondant
-    device1 = None #TODO: load a real device!!!!!!!!
-    device2 = None #TODO: load a real device!!!!!!!!
+    #IOS Reference (catalogue des commandes et parametres possibles pour un device)
+    iosReference = IOSReference(minidom.parse('IOSRef_AlgoValidation.xml'))
+
+    #Devices presents sur le reseau
+    device1 = Device(minidom.parse('Device1_AlgoValidation.xml'), iosReference)
+    device2 = Device(minidom.parse('Device2_AlgoValidation.xml'), iosReference)
 
     #Central validation (main class)
     central = CentralValidation()
@@ -60,8 +62,8 @@ def main():
     condition2.setTerms(AtomicAliasTerm(aliasY), AtomicAliasTerm(aliasZ))
 
     #nodes
-    node5 = Node(uid_c, [], [], aliasZ)            #neutral
-    node4 = Node(uid_b, [], [condition1], aliasY)  #neutral
+    node5 = Node(uid_c, [], [], aliasZ)             #neutral
+    node4 = Node(uid_b, [], [condition1], aliasY)   #neutral
     node3 = NodeOr(uid_a, [node4], [], aliasX)
     node2 = NodeAnd(0, [node5], [], None)           #no conditions and no aliases
     node1 = NodeAnd(0, [node3], [], None)           #no conditions and no aliases

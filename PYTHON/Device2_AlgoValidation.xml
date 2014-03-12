@@ -1,0 +1,14 @@
+<xml>
+    <Device version="12" name="Device2">
+        <DeviceCommand negated="false" name="version" ref_cmd="1">
+            <DeviceParameter name="a" ref_param="101">
+                <Value>5</Value>
+            </DeviceParameter>
+        </DeviceCommand>
+        <DeviceCommand negated="false" name="hostname" ref_cmd="2">
+            <DeviceParameter name="b" ref_param="102">
+                <Value>8</Value>
+            </DeviceParameter>
+        </DeviceCommand>
+    </Device>
+</xml>

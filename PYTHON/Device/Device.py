@@ -15,7 +15,8 @@ def printLog(text):
 
 
 class Device:
-    def __init__(self, xmldoc):
+    def __init__(self, xmldoc, iosRef = None):
+        self.iosRef = iosRef
         self.deviceCommandList = []
         self.name = ""
         self.loadAllXML(xmldoc)

@@ -14,7 +14,7 @@ from xml.dom import minidom
 
 def main():
     print "*** Loading Device Tests ***"
-    xmldoc = minidom.parse('Device1.xml')
+    xmldoc = minidom.parse('Real_Example_Device.xml')
     device = Device(xmldoc)
     '''for cmd in device.deviceCommandList:
         print cmd.name

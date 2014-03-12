@@ -16,7 +16,7 @@ from Device import *
 def main():
     print "*** Loading IOSReference Tests ***"
 
-    xmldoc1 = minidom.parse('IOSReference.xml')
+    xmldoc1 = minidom.parse('Real_Example_IOSReference.xml')
     ios = IOSReference(xmldoc1)
 
 
