@@ -59,7 +59,7 @@ class Node(object):
 
         thisNodeUsed = False
         for node in deviceParametersAndCommandsList:
-            if (isinstance(node, DeviceCommand) & node.ref_cmd==self.uidParamOrCommand) | (isinstance(node, DeviceParameter) & node.ref_param==self.uidParamOrCommand):
+            if (isinstance(node, DeviceCommand) and (node.ref_cmd==self.uidParamOrCommand)) or (isinstance(node, DeviceParameter) and (node.ref_param==self.uidParamOrCommand)):
                 if thisNodeUsed:
                     nodeCopy = self.copy()                                  #create a copy of this node
                     if isinstance(node, DeviceCommand):
