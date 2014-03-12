@@ -42,8 +42,8 @@ class Node(object):
 
     def copy(self):
         childsCopy = []
-        for child in childrens:
-            self.childsCopy.append(child.copy())
+        for child in self.childs:
+            childsCopy.append(child.copy())
         nodeCopy = Node(self.uidParamOrCommand, childsCopy, self.conditions, self.alias, self.computedValue)
         return nodeCopy
 
@@ -59,26 +59,35 @@ class Node(object):
 
         thisNodeUsed = False
         for node in deviceParametersAndCommandsList:
-            if (isinstance(node, DeviceCommand) and (node.ref_cmd==self.uidParamOrCommand)) or (isinstance(node, DeviceParameter) and (node.ref_param==self.uidParamOrCommand)):
+            print "**VALUATE  debut boucle self.uidParamOrCommand="+str(self.uidParamOrCommand)+"    LISTE="+str(deviceParametersAndCommandsList)
+            if isinstance(node, DeviceCommand):
+                print "**VALUATE   node.ref_cmd="+str(node.ref_cmd)
+            if isinstance(node, DeviceParameter):
+                print "**VALUATE   node.ref_param="+str(node.ref_param)
+
+            if (self.uidParamOrCommand==0 or isinstance(node, DeviceCommand) and (node.ref_cmd==self.uidParamOrCommand)) or (isinstance(node, DeviceParameter) and (node.ref_param==self.uidParamOrCommand)):
+                print "**VALUATE param ou commande trouvee   thisNodeUsed="+str(thisNodeUsed)
                 if thisNodeUsed:
                     nodeCopy = self.copy()                                  #create a copy of this node
                     if isinstance(node, DeviceCommand):
                         nodeCopy.computedValue = None                       #it's a DeviceCommand, so there's no value on it
                     else:
+                        print "**VALUATE  node.values recupere : "+str(node.values)
                         nodeCopy.computedValue = node.values                #it's a DeviceParameter, so we can valuate this node
 
-                    if nodeCopy.computedValue!=None | (nodeCopy.childs!=None & nodeCopy.childs.__len__()>0):
-                        parent.addChild(nodeCopy)                           #if there's a value or childs in this node, we can keep this node in the formula tree
+                    if nodeCopy.computedValue!=None or (nodeCopy.childs!=None and nodeCopy.childs.__len__()>0):
                         for child in nodeCopy.childs:
                             child.valuate(self, node)                       #valuates subNodes (recursive call)
+                        parent.addChild(nodeCopy)                           #if there's a value or childs in this node, we can keep this node in the formula tree
                 else:
                     thisNodeUsed = True
                     if isinstance(node, DeviceCommand):
-                        nodeCopy.computedValue = None                       #it's a DeviceCommand, so there's no value on it
+                        self.computedValue = None                           #it's a DeviceCommand, so there's no value on it
                     else:
-                        nodeCopy.computedValue = node.values                #it's a DeviceParameter, so we can valuate this node
+                        print "**VALUATE NOT USED  node.values recupere : "+str(node.values)
+                        self.computedValue = node.values                #it's a DeviceParameter, so we can valuate this node
 
-                    if self.computedValue==None & (nodeCopy.childs==None | nodeCopy.childs.__len__()==0):
+                    if self.computedValue==None and (self.childs==None or self.childs.__len__()==0):
                         parent.removeChild(self)                            #if no value and no childs, don't keep this node in the formula tree
                     else:
                         for child in self.childs:

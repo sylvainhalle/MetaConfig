@@ -30,7 +30,7 @@ class DeviceParameter:
 
 
     def toString(self):
-        return "DeviceParameter [name='"+str(self.name)+", ref_param="+str(self.ref_param)+"]"
+        return "DeviceParameter [name='"+str(self.name)+"', ref_param="+str(self.ref_param)+", values="+str(self.values)+"]"
 
 
 

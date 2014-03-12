@@ -62,11 +62,12 @@ class LogicFormulaTree(object):
         self.central = None
         self.nodes = []
         for node in nodes:
-            self.addChild(node)
+            self.nodes.append(node)
         self.interdependancies = []
         for interdep in interdependancies:
             self.interdependancies.append(interdep)
         self.device = None
+        self.additionalNodes = []
 
     def setCentral(self, central):
         self.central = central
@@ -82,11 +83,14 @@ class LogicFormulaTree(object):
         self.interdependancies.append(interdependancy)
 
     def addChild(self, node):
-        self.nodes.append(node)
+        # don't directly add to the current nodes
+        self.additionalNodes.append(node)
 
     def valuate(self):
         for node in self.nodes:
             node.valuate(self, self.device)
+        # now, add the additional nodes (already valuated)
+        self.nodes.extend(self.additionalNodes)
 
     def compute(self):
         result = True
