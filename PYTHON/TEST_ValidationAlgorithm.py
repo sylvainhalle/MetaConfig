@@ -5,6 +5,8 @@ Created on 8 fevr. 2014
 Construction d'un arbre de validation en "dur"
 '''
 
+from xml.dom import minidom
+from IOSRef import *
 from Node import *
 from Conditions import *
 from Terms import *
@@ -13,21 +15,21 @@ from Device import *
 
 def main():
     print "*** Building validation tree ***"
-    print "For any a=x : For any c=z : There exists a=x, b=y : x>y and y=z"
+    print "For any d=x : For any d=x, a=y : y<=0"
 
     '''
 
-  ----------- CENTRAL ----------
-  |                            |
-  o  (node1)                   o  (node2)
-  |                            |
-  | for any                    | for any
-  |                            |
- a=x (node3)                  c=z (node5)
-  |
-  | there exists                              [interdep: cond y=z]
-  |
- b=y (node4) [cond. x>y]
+  -----------  CENTRAL  ----------
+                  |
+                  o  (node1)
+                  |
+                  | for any
+                  |
+                 d=x (node2)
+                  |
+                  | for any
+                  |
+                 a=y (node3) [cond. y<=0]
 
 
     '''
@@ -47,32 +49,21 @@ def main():
     #alias x, y, z dans les noeuds
     aliasX = Alias("x")
     aliasY = Alias("y")
-    aliasZ = Alias("z")
 
-    uid_a = 1
-    uid_b = 2
-    uid_c = 3
+    uid_a = 101
+    uid_d = 1
 
-    #condition x>y
-    condition1 = Condition(">")
-    condition1.setTerms(AtomicAliasTerm(aliasX), AtomicAliasTerm(aliasY))
-
-    #condition y=z
-    condition2 = Condition("=")
-    condition2.setTerms(AtomicAliasTerm(aliasY), AtomicAliasTerm(aliasZ))
+    #condition y<=0
+    condition1 = Condition("<=")
+    condition1.setTerms(AtomicAliasTerm(aliasY), AtomicConstantTerm(0))
 
     #nodes
-    node5 = Node(uid_c, [], [], aliasZ)             #neutral
-    node4 = Node(uid_b, [], [condition1], aliasY)   #neutral
-    node3 = NodeOr(uid_a, [node4], [], aliasX)
-    node2 = NodeAnd(0, [node5], [], None)           #no conditions and no aliases
-    node1 = NodeAnd(0, [node3], [], None)           #no conditions and no aliases
-
-    #interdependancy between nodes 4 and 5
-    interdep = Interdependancy([aliasY, aliasZ], [condition2])
+    node3 = Node(uid_a, [], [condition1], aliasY)     #neutral
+    node2 = NodeAnd(uid_d, [node3], [], aliasX)     #no conditions
+    node1 = NodeAnd(0, [node2], [], None)           #no conditions and no aliases
 
     #Formula tree
-    logicFormulaTree = LogicFormulaTree([node1, node2], [interdep])
+    logicFormulaTree = LogicFormulaTree([node1], []) #just one node at root and no interdependancies
     central.submitFormula(logicFormulaTree)
 
     print central
