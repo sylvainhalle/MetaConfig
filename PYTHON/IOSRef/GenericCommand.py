@@ -23,8 +23,8 @@ class AuxiliarCommand:
             self.versionMax = xmlNode.attributes['versionMax'].value
             self.genericCommandNeeded = xmlNode.attributes['guid'].value
 
-        from IOSReference import printLog
-        printLog("Created "+self.__str__())
+        #from IOSReference import printLog
+        #printLog("Created "+self.__str__())
 
 
     def __str__(self):
@@ -45,8 +45,8 @@ class GenericParameter:
             self.uid = xmlNode.attributes['uid'].value
             self.name = xmlNode.attributes['name'].value
 
-        from IOSReference import printLog
-        printLog("Created "+self.__str__())
+        #from IOSReference import printLog
+        #printLog("Created "+self.__str__())
 
 
     def __str__(self):
@@ -84,8 +84,8 @@ class GenericCommand:
                 auxiliarCommand = AuxiliarCommand(node)
                 self.addAuxiliarCommand(auxiliarCommand)
 
-        from IOSReference import printLog
-        printLog("Created "+self.__str__())
+        #from IOSReference import printLog
+        #printLog("Created "+self.__str__())
 
 
     def addCiscoCommandsVersion(self, ciscoCommandsVersion):

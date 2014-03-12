@@ -29,8 +29,8 @@ class CiscoCommandsVersion:
                 ciscoSyntax = CiscoSyntax(node)
                 self.addCiscoSyntax(ciscoSyntax)
 
-        from IOSReference import printLog
-        printLog("Created "+self.__str__())
+        #from IOSReference import printLog
+        #printLog("Created "+self.__str__())
 
 
     def addCiscoSyntax(self, ciscoSyntax):
@@ -55,8 +55,8 @@ class CiscoSyntax:
                 syntaxTerm = SyntaxTerm(node)
                 self.addSyntaxTerm(syntaxTerm)
 
-        from IOSReference import printLog
-        printLog("Created "+self.__str__())
+        #from IOSReference import printLog
+        #printLog("Created "+self.__str__())
 
     def addSyntaxTerm(self, syntaxTerm):
         if (isinstance(syntaxTerm, SyntaxTerm)):

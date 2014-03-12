@@ -8,11 +8,11 @@ import copy
 
 class Node(object):
     '''
-    Node abstrait de l'arbre d'evaluation
+    Abstract node in the evaluation tree
     '''
     def __init__(self, uidParamOrCommand, childrens = [], conditions = [], alias = None, computedValue = None):
         '''
-        Constructeur
+        Constructor
         '''
         self.uidParamOrCommand = uidParamOrCommand
         self.childs = []
@@ -51,6 +51,13 @@ class Node(object):
     # deviceNode can be the device itself (if we are at the level of the root) or a DeviceCommand
     # this fonction browses the elements under the deviceNode, looking for uids matching this 'uidParamOrCommand'
     def valuate(self, parent, deviceNode):
+
+        if self.uidParamOrCommand==0:                           #if it's the root
+            tmpList = self.childs[:]                            #use a temporary list for the 'foreach' because we will add another nodes to self.childs
+            for child in tmpList:
+                child.valuate(self, deviceNode)                 #valuates subNodes (recursive calls)
+            return
+
         deviceParametersAndCommandsList = []
         if (isinstance(deviceNode, Device)):
             deviceParametersAndCommandsList = deviceNode.deviceCommandList
@@ -58,51 +65,65 @@ class Node(object):
             deviceParametersAndCommandsList = deviceNode.deviceParametersAndCommandsList
 
         thisNodeUsed = False
-        for node in deviceParametersAndCommandsList:
-            print "**VALUATE  debut boucle self.uidParamOrCommand="+str(self.uidParamOrCommand)+"    LISTE="+str(deviceParametersAndCommandsList)
-            if isinstance(node, DeviceCommand):
-                print "**VALUATE   node.ref_cmd="+str(node.ref_cmd)
-            if isinstance(node, DeviceParameter):
-                print "**VALUATE   node.ref_param="+str(node.ref_param)
+        for devNode in deviceParametersAndCommandsList:
 
-            if (self.uidParamOrCommand==0 or isinstance(node, DeviceCommand) and (node.ref_cmd==self.uidParamOrCommand)) or (isinstance(node, DeviceParameter) and (node.ref_param==self.uidParamOrCommand)):
-                print "**VALUATE param ou commande trouvee   thisNodeUsed="+str(thisNodeUsed)
+            paramOrCommandDeviceUID = -1
+            if isinstance(devNode, DeviceCommand):
+                paramOrCommandDeviceUID = devNode.ref_cmd
+            if isinstance(devNode, DeviceParameter):
+                paramOrCommandDeviceUID = devNode.ref_param
+
+            #print "***VALUATE  START Loop :  self.uidParamOrCommand="+str(self.uidParamOrCommand)+"  paramOrCommandDeviceUID="+str(paramOrCommandDeviceUID)+"   LISTE="+str(deviceParametersAndCommandsList)
+
+            if str(self.uidParamOrCommand)==str(paramOrCommandDeviceUID):
+                #print "**VALUATE param or command found!   thisNodeUsed="+str(thisNodeUsed)
                 if thisNodeUsed:
                     nodeCopy = self.copy()                                  #create a copy of this node
-                    if isinstance(node, DeviceCommand):
+                    if isinstance(devNode, DeviceCommand):
                         nodeCopy.computedValue = None                       #it's a DeviceCommand, so there's no value on it
                     else:
-                        print "**VALUATE  node.values recupere : "+str(node.values)
-                        nodeCopy.computedValue = node.values                #it's a DeviceParameter, so we can valuate this node
+                        nodeCopy.computedValue = devNode.values[0]          #it's a DeviceParameter, so we can valuate this node
+
+                    #print "***VALUATE  computedValue="+str(nodeCopy.computedValue)
 
                     if nodeCopy.computedValue!=None or (nodeCopy.childs!=None and nodeCopy.childs.__len__()>0):
-                        for child in nodeCopy.childs:
-                            child.valuate(self, node)                       #valuates subNodes (recursive call)
+                        #print "**VALUATE  recursive call  self.uidParamOrCommand="+str(self.uidParamOrCommand)
+                        tmpList = nodeCopy.childs[:]
+                        for child in tmpList:
+                            child.valuate(self, devNode)                       #valuates subNodes (recursive calls)
                         parent.addChild(nodeCopy)                           #if there's a value or childs in this node, we can keep this node in the formula tree
                 else:
                     thisNodeUsed = True
-                    if isinstance(node, DeviceCommand):
+                    if isinstance(devNode, DeviceCommand):
                         self.computedValue = None                           #it's a DeviceCommand, so there's no value on it
                     else:
-                        print "**VALUATE NOT USED  node.values recupere : "+str(node.values)
-                        self.computedValue = node.values                #it's a DeviceParameter, so we can valuate this node
+                        self.computedValue = devNode.values[0]              #it's a DeviceParameter, so we can valuate this node
+
+                    #print "***VALUATE  computedValue="+str(self.computedValue)
+
+
 
                     if self.computedValue==None and (self.childs==None or self.childs.__len__()==0):
                         parent.removeChild(self)                            #if no value and no childs, don't keep this node in the formula tree
                     else:
-                        for child in self.childs:
-                            child.valuate(self, node)                       #valuates subNodes (recursive call)
+                        #print "**VALUATE NOT USED recursive call self.uidParamOrCommand="+str(self.uidParamOrCommand)
+                        tmpList = self.childs[:]
+                        for child in tmpList:
+                            child.valuate(self, devNode)                       #valuates subNodes (recursive call)
 
     def compute(self):
         self.updateAlias()
         result = True
         for cond in self.conditions:      #We check all conditions bound to this node
-            print cond
             result &= cond.compute()      #conditions are separated by "and"
         return result
 
     def __str__(self):
-        return "Node: uidParamOrCommand:" + str(self.uidParamOrCommand)
+        return "Node: uidParamOrCommand=" + str(self.uidParamOrCommand)
+
+
+
+
 
 class NodeAnd(Node):
     def __init__(self, uidParamOrCommand, childrens = [], conditions = [], alias = None):
@@ -118,7 +139,10 @@ class NodeAnd(Node):
             return false
 
     def __str__(self):
-        return "NodeAnd: uidParamOrCommand:" + str(self.uidParamOrCommand)
+        return "NodeAnd: uidParamOrCommand=" + str(self.uidParamOrCommand)
+
+
+
 
 class NodeOr(Node):
     def __init__(self, uidParamOrCommand, childrens, conditions = [], alias = None):
@@ -134,4 +158,4 @@ class NodeOr(Node):
             return false
 
     def __str__(self):
-        return "NodeOr: uidParamOrCommand:" + str(self.uidParamOrCommand)
+        return "NodeOr: uidParamOrCommand=" + str(self.uidParamOrCommand)

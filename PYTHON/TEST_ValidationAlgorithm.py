@@ -14,8 +14,17 @@ from CentralValidation import *
 from Device import *
 
 def main():
-    print "*** Building validation tree ***"
-    print "For any d=x : For any d=x, a=y : y<=0"
+    print "***           START              ***\n"
+
+    #Loading IOS Reference (ALL commands and parameters available in a device, i.e. documentation)
+    iosReference = IOSReference(minidom.parse('IOSRef_AlgoValidation.xml'))
+
+    #Loading devices connected to the network
+    device1 = Device(minidom.parse('Device1_AlgoValidation.xml'), iosReference)
+    device2 = Device(minidom.parse('Device2_AlgoValidation.xml'), iosReference)
+
+
+    print "\n**   Building validation tree for formula:    For any d=x : For any d=x, a=y : y<=0 \n"
 
     '''
 
@@ -34,19 +43,13 @@ def main():
 
     '''
 
-    #IOS Reference (catalogue des commandes et parametres possibles pour un device)
-    iosReference = IOSReference(minidom.parse('IOSRef_AlgoValidation.xml'))
-
-    #Devices presents sur le reseau
-    device1 = Device(minidom.parse('Device1_AlgoValidation.xml'), iosReference)
-    device2 = Device(minidom.parse('Device2_AlgoValidation.xml'), iosReference)
 
     #Central validation (main class)
     central = CentralValidation()
     central.addDevice(device1)
     central.addDevice(device2)
 
-    #alias x, y, z dans les noeuds
+    #alias x, y, z in the nodes
     aliasX = Alias("x")
     aliasY = Alias("y")
 
@@ -66,9 +69,10 @@ def main():
     logicFormulaTree = LogicFormulaTree([node1], []) #just one node at root and no interdependancies
     central.submitFormula(logicFormulaTree)
 
-    print central
     central.valuate()  #import values of parameters from the device META-CLI
-    print central.compute() #compute conditions of the validation tree thanks to the imported values. Return true if the logic formula is verified.
+    tmp = central.compute() #compute conditions of the validation tree thanks to the imported values. Return true if the logic formula is verified.
+
+    print "** FINAL RESULT of computing for all devices : "+str(tmp)
 
     print "***           END              ***"
 

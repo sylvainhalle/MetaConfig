@@ -11,11 +11,11 @@
 
 class Alias(object):
     '''
-    Identifiant de noeud pour l'arbre d'evaluation
+    ID of a node in the evaluation tree
     '''
     def __init__(self, name = ""):
         '''
-        Constructeur
+        Constructor
         '''
         self.name = name
         self.currentValue = None
@@ -27,7 +27,7 @@ class Alias(object):
         if self.currentValue != None:
             return self.currentValue
         else:
-            print "Erreur valeur alias non definie:" + str(self)
+            print "Warning: alias not defined : " + str(self)
             return 0
 
     def __str__(self):
@@ -35,7 +35,7 @@ class Alias(object):
 
 class Interdependancy(object):
     '''
-    Lie plusieurs alias interdependants
+    Used to bind multiple dependant aliases
     '''
     def __init__(self, aliasList = [], conditions = []):
         self.aliasList = []
@@ -49,11 +49,11 @@ class Interdependancy(object):
         aliasNames = ""
         for alias in self.aliasList:
             aliasNames += " " + alias.name
-        return "Interdependancy entre:" + str(aliasNames)
+        return "Interdependancy between:" + str(aliasNames)
 
 class Condition(object):
     '''
-    Condition reliant 2 termes
+    A condition binds 2 terms (aliases, constants, ...)
     '''
     def __init__(self, operator, term1 = None, term2 = None):
         self.operateur = operator
@@ -65,21 +65,21 @@ class Condition(object):
         self.term2 = term2
 
     def compute(self):
-        print "Evaluate", str(self)
+        #print "Evaluate", str(self)
         if self.operateur == "==":
-            return self.term1.compute() == self.term2.compute()
+            return int(self.term1.compute()) == int(self.term2.compute())
         elif self.operateur == "<":
-            return self.term1.compute() < self.term2.compute()
+            return int(self.term1.compute()) <  int(self.term2.compute())
         elif self.operateur == ">":
-            return self.term1.compute() > self.term2.compute()
+            return int(self.term1.compute()) >  int(self.term2.compute())
         elif self.operateur == "!=":
-            return self.term1.compute() != self.term2.compute()
+            return int(self.term1.compute()) != int(self.term2.compute())
         elif self.operateur == "<=":
-            return self.term1.compute() <= self.term2.compute()
+            return int(self.term1.compute()) <= int(self.term2.compute())
         elif self.operateur == ">=":
-            return self.term1.compute() >= self.term2.compute()
+            return int(self.term1.compute()) >= int(self.term2.compute())
         else:
             return False
 
     def __str__(self):
-        return "Condition: operateur:"+str(self.operateur)+",terms:"+str(self.term1)+","+str(self.term2)
+        return "Condition: operator="+str(self.operateur)+", terms= "+str(self.term1)+", "+str(self.term2)

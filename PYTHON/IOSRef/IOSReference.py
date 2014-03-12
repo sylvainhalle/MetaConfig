@@ -23,8 +23,6 @@ class IOSReference:
 
 
     def loadAllXML(self, xmldoc):
-        printLog("Starting XML parsing")
-
         iosRef = xmldoc.getElementsByTagName('IOSReference')[0]
         self.lastUpdate = iosRef.attributes['lastUpdate'].value
 

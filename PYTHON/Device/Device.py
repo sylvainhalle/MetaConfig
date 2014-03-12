@@ -24,7 +24,7 @@ class Device:
 
 
     def loadAllXML(self, xmldoc):
-        printLog("Starting XML parsing")
+
 
         iosRef = xmldoc.getElementsByTagName('Device')[0]
         self.name = iosRef.attributes['name'].value
@@ -33,6 +33,8 @@ class Device:
         for node in alldeviceCommands:
             deviceCommand = DeviceCommand(node)
             self.addDeviceCommand(deviceCommand)
+
+        printLog("Successfully loaded Device '"+self.name+"'")
 
 
     def addDeviceCommand(self, deviceCommand):

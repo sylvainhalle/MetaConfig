@@ -13,7 +13,7 @@ import copy
 
 class CentralValidation(object):
     '''
-    Central de validation des regles
+    Rules validation central
     '''
     def __init__(self):
         self.devices = []
@@ -36,9 +36,12 @@ class CentralValidation(object):
                 self.logicFormulaTrees.append(formulaTreeCopy)
 
     def compute(self):
+        print "* CENTRAL VALIDATION : beginning computing formula..."
         result = True
         for logicFormulaTree in self.logicFormulaTrees:
-            result &= logicFormulaTree.compute()
+            tmp = logicFormulaTree.compute()
+            print "* CENTRAL VALIDATION : computing result for device '"+logicFormulaTree.device.name+"' : "+str(tmp)
+            result &= tmp
         return result
 
     def valuate(self):
@@ -83,14 +86,13 @@ class LogicFormulaTree(object):
         self.interdependancies.append(interdependancy)
 
     def addChild(self, node):
-        # don't directly add to the current nodes
-        self.additionalNodes.append(node)
+        self.nodes.append(node)
 
     def valuate(self):
-        for node in self.nodes:
+        #use a temporary list for the 'foreach' because we will add another nodes to self.nodes
+        tmpList = self.nodes[:]
+        for node in tmpList:
             node.valuate(self, self.device)
-        # now, add the additional nodes (already valuated)
-        self.nodes.extend(self.additionalNodes)
 
     def compute(self):
         result = True

@@ -40,8 +40,8 @@ class SyntaxTerm:
                 if atomicTerm!=None:
                     self.addAtomicTerm(atomicTerm)
 
-        from IOSReference import printLog
-        printLog("Created "+self.__str__())
+        #from IOSReference import printLog
+        #printLog("Created "+self.__str__())
 
     def addAtomicTerm(self, atomicTerm):
         if (isinstance(atomicTerm, AtomicTerm)):
@@ -59,8 +59,8 @@ class ListOptionItem:
         else:
             self.value = xmlNode.nodeValue
 
-        from IOSReference import printLog
-        printLog("Created "+self.__str__())
+        #from IOSReference import printLog
+        #printLog("Created "+self.__str__())
 
 
     def __str__(self):
@@ -99,8 +99,8 @@ class CiscoParameter(AtomicTerm):
                 listOptionItem = ListOptionItem(node)
                 self.addListOptionItem(listOptionItem)
 
-        from IOSReference import printLog
-        printLog("Created "+self.__str__())
+        #from IOSReference import printLog
+        #printLog("Created "+self.__str__())
 
 
 
@@ -124,8 +124,8 @@ class CiscoKeyword(AtomicTerm):
         else:
             self.word = xmlNode.attributes['word'].value
 
-        from IOSReference import printLog
-        printLog("Created "+self.__str__())
+        #from IOSReference import printLog
+        #printLog("Created "+self.__str__())
 
     def __str__(self):
         return "CiscoKeyword [word="+str(self.word)+"]"
@@ -146,8 +146,8 @@ class TermOrTerm(AtomicTerm):
                 syntaxTerm = SyntaxTerm(node)
                 self.addSyntaxTerm(syntaxTerm)
 
-        from IOSReference import printLog
-        printLog("Created "+self.__str__())
+        #from IOSReference import printLog
+        #printLog("Created "+self.__str__())
 
 
 

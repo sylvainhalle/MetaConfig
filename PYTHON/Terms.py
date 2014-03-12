@@ -11,15 +11,17 @@
 
 class AbstractTerm(object):
     '''
-    Terme abstrait
+    Abstract Term
     '''
     def compute(self):
-        print "Compute the node..."
+        #print "Compute the node..."
         return 0
+
+
 
 class AtomicAliasTerm(AbstractTerm):
     '''
-    Terme designant un alias
+    Term corresponding to an alias (i.e. temporary variable like x, y, z...)
     '''
     def __init__(self, alias):
         self.alias = alias
@@ -28,12 +30,14 @@ class AtomicAliasTerm(AbstractTerm):
         return str(self.alias)
 
     def compute(self):
-        print "Compute the node "+ str(self.alias)
+        #print "Compute the node "+ str(self.alias)
         return self.alias.getValue()
+
+
 
 class AtomicConstantTerm(AbstractTerm):
     '''
-    Terme designant une constante
+    Term corresponding to a constant value (0, 1, ...)
     '''
     def __init__(self, constant):
         self.constant = constant
@@ -46,7 +50,7 @@ class AtomicConstantTerm(AbstractTerm):
 
 class Term(AbstractTerm):
     '''
-    Terme
+    Term
     '''
     def __init__(self, operator, term1 = None, term2 = None):
         self.operator = operator
@@ -58,15 +62,15 @@ class Term(AbstractTerm):
         self.term2 = term2
 
     def compute(self):
-        print "Evaluate", str(self)
+        #print "Evaluate", str(self)
         if self.operateur == "+":
-            return self.term1.compute() + self.term2.compute()
+            return int(self.term1.compute()) + int(self.term2.compute())
         elif self.operateur == "-":
-            return self.term1.compute() - self.term2.compute()
+            return int(self.term1.compute()) - int(self.term2.compute())
         elif self.operateur == "*":
-            return self.term1.compute() * self.term2.compute()
+            return int(self.term1.compute()) * int(self.term2.compute())
         elif self.operateur == "/":
-            return self.term1.compute() / self.term2.compute()
+            return int(self.term1.compute()) / int(self.term2.compute())
         else:
             return False
 
