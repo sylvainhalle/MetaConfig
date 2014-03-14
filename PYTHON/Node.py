@@ -44,7 +44,12 @@ class Node(object):
         childsCopy = []
         for child in self.childs:
             childsCopy.append(child.copy())
-        nodeCopy = Node(self.uidParamOrCommand, childsCopy, self.conditions, self.alias, self.computedValue)
+        if isinstance(self, NodeAnd):
+            nodeCopy = NodeAnd(self.uidParamOrCommand, childsCopy, self.conditions, self.alias)
+        elif isinstance(self, NodeOr):
+            nodeCopy = NodeOr(self.uidParamOrCommand, childsCopy, self.conditions, self.alias)
+        else:
+            nodeCopy = Node(self.uidParamOrCommand, childsCopy, self.conditions, self.alias, self.computedValue)
         return nodeCopy
 
     # parent is the parent Node of this node (useful for adding brothers to this node). It can also be the FormulaTree itself.
@@ -84,10 +89,10 @@ class Node(object):
                     else:
                         nodeCopy.computedValue = devNode.values[0]          #it's a DeviceParameter, so we can valuate this node
 
-                    #print "***VALUATE  computedValue="+str(nodeCopy.computedValue)
+                    #if nodeCopy.computedValue!=None:
+                    #    print "***VALUATE  computedValue="+str(nodeCopy.computedValue)+" parent:"+str(parent)+" this:"+str(self)
 
                     if nodeCopy.computedValue!=None or (nodeCopy.childs!=None and nodeCopy.childs.__len__()>0):
-                        #print "**VALUATE  recursive call  self.uidParamOrCommand="+str(self.uidParamOrCommand)
                         tmpList = nodeCopy.childs[:]
                         for child in tmpList:
                             child.valuate(self, devNode)                       #valuates subNodes (recursive calls)
@@ -99,14 +104,12 @@ class Node(object):
                     else:
                         self.computedValue = devNode.values[0]              #it's a DeviceParameter, so we can valuate this node
 
-                    #print "***VALUATE  computedValue="+str(self.computedValue)
-
-
+                    #if self.computedValue!=None:
+                    #    print "***VALUATE  computedValue="+str(self.computedValue)+" parent:"+str(parent)+" this:"+str(self)
 
                     if self.computedValue==None and (self.childs==None or self.childs.__len__()==0):
                         parent.removeChild(self)                            #if no value and no childs, don't keep this node in the formula tree
                     else:
-                        #print "**VALUATE NOT USED recursive call self.uidParamOrCommand="+str(self.uidParamOrCommand)
                         tmpList = self.childs[:]
                         for child in tmpList:
                             child.valuate(self, devNode)                       #valuates subNodes (recursive call)
@@ -130,13 +133,14 @@ class NodeAnd(Node):
         Node.__init__(self, uidParamOrCommand, childrens, conditions, alias)
 
     def compute(self):
-        if Node.compute(self):                #If conditions are verified, we can verify childrens
-            result = True
-            for child in self.childs:
-                result &= child.compute()     #it's an "AND" node, so ALL childs must be verified
-            return result
+        result = True
+        for child in self.childs:
+            result = child.compute() and result     #it's an "AND" node, so ALL childs must be verified
+
+        if result:
+            return Node.compute(self)     #If childrens are verified, we can verify conditions attached to this node
         else:
-            return false
+            return False
 
     def __str__(self):
         return "NodeAnd: uidParamOrCommand=" + str(self.uidParamOrCommand)
@@ -149,13 +153,14 @@ class NodeOr(Node):
         Node.__init__(self, uidParamOrCommand, childrens, conditions, alias)
 
     def compute(self):
-        if Node.compute(self):                #If conditions are verified, we can verify childrens
-            result = False
-            for child in self.childs:
-                result |= child.compute()     #it's an "OR" node
-            return result
+        result = False
+        for child in self.childs:
+            result = child.compute() or result     #it's an "OR" node, one child is enough to verify this node
+
+        if result:
+            return Node.compute(self)    #If childrens are verified, we can verify conditions attached to this node
         else:
-            return false
+            return False
 
     def __str__(self):
         return "NodeOr: uidParamOrCommand=" + str(self.uidParamOrCommand)

@@ -15,9 +15,13 @@ class CentralValidation(object):
     '''
     Rules validation central
     '''
-    def __init__(self):
+    def __init__(self, interdependancies = []):
         self.devices = []
         self.logicFormulaTrees = []
+
+        self.interdependancies = []
+        for interdep in interdependancies:
+            self.interdependancies.append(interdep)
 
     def addDevice(self, device):
         self.devices.append(device)
@@ -48,6 +52,10 @@ class CentralValidation(object):
         for logicFormulaTree in self.logicFormulaTrees:
             logicFormulaTree.valuate()
 
+    def addInterdependancy(self, interdependancy):
+        self.interdependancies.append(interdependancy)
+
+
     def __str__(self):
         affichage = "Central:\nFormulaTrees:\n"
         for logicFormulaTree in self.logicFormulaTrees:
@@ -61,16 +69,12 @@ class CentralValidation(object):
 
 
 class LogicFormulaTree(object):
-    def __init__(self, nodes = [], interdependancies = []):
+    def __init__(self, nodes = []):
         self.central = None
         self.nodes = []
         for node in nodes:
             self.nodes.append(node)
-        self.interdependancies = []
-        for interdep in interdependancies:
-            self.interdependancies.append(interdep)
         self.device = None
-        self.additionalNodes = []
 
     def setCentral(self, central):
         self.central = central
@@ -82,8 +86,6 @@ class LogicFormulaTree(object):
         #TODO: Return a custom copy of the tree, do not use "deepcopy" !
         return copy.deepcopy(self)
 
-    def addInterdependancy(self, interdependancy):
-        self.interdependancies.append(interdependancy)
 
     def addChild(self, node):
         self.nodes.append(node)

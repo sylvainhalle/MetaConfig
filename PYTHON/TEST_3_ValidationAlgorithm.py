@@ -1,8 +1,8 @@
 '''
 Created on 8 fevr. 2014
 
-@author: Sylvain
-Construction d'un arbre de validation en "dur"
+@author: Sylvain STOESEL & Clement PARISOT
+Building a validation tree - Formula test #3
 '''
 
 from xml.dom import minidom
@@ -24,22 +24,23 @@ def main():
     device2 = Device(minidom.parse('Device2_AlgoValidation.xml'), iosReference)
 
 
-    print "\n**   Building validation tree for formula:    For any d=x : For any d=x, a=y : y<=0 \n"
+    print "\n**   Building validation tree for formula #3:    Exists d=x : Exists d=x, a=y : Exists d=x, b=z : y=0 ^ z=3 \n"
 
     '''
 
   -----------  CENTRAL  ----------
                   |
-                  o  (node1)
+                  o  (node1)   EXISTS
                   |
-                  | for any
                   |
-                 d=x (node2)
                   |
-                  | for any
-                  |
-                 a=y (node3) [cond. y<=0]
-
+                 d=x (node2)   EXISTS
+                 /\
+                /  \
+               /    \
+              /      \
+      a=y (node3)    b=z (node4)
+     [cond. y=0]      [cond. z=3]
 
     '''
 
@@ -49,24 +50,31 @@ def main():
     central.addDevice(device1)
     central.addDevice(device2)
 
-    #alias x, y, z in the nodes
+    #aliases x, y, z in the nodes
     aliasX = Alias("x")
     aliasY = Alias("y")
+    aliasZ = Alias("z")
 
     uid_a = 101
+    uid_b = 102
     uid_d = 1
 
-    #condition y<=0
-    condition1 = Condition("<=")
+    #condition y=0
+    condition1 = Condition("==")
     condition1.setTerms(AtomicAliasTerm(aliasY), AtomicConstantTerm(0))
+    #condition z=3
+    condition2 = Condition("==")
+    condition2.setTerms(AtomicAliasTerm(aliasZ), AtomicConstantTerm(3))
+
 
     #nodes
-    node3 = Node(uid_a, [], [condition1], aliasY)     #neutral
-    node2 = NodeAnd(uid_d, [node3], [], aliasX)     #no conditions
-    node1 = NodeAnd(0, [node2], [], None)           #no conditions and no aliases
+    node4 = Node(uid_b, [], [condition2], aliasZ)
+    node3 = Node(uid_a, [], [condition1], aliasY)
+    node2 = NodeOr(uid_d, [node3, node4], [], aliasX)
+    node1 = NodeOr(0, [node2], [], None)
 
     #Formula tree
-    logicFormulaTree = LogicFormulaTree([node1], []) #just one node at root and no interdependancies
+    logicFormulaTree = LogicFormulaTree([node1]) #just one node at root
     central.submitFormula(logicFormulaTree)
 
     central.valuate()  #import values of parameters from the device META-CLI

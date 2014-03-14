@@ -66,18 +66,21 @@ class Condition(object):
 
     def compute(self):
         #print "Evaluate", str(self)
+        t1 = int(self.term1.compute())
+        t2 = int(self.term2.compute())
+        #print "*** Compute condition : "+str(t1)+" "+self.operateur+" "+str(t2)
         if self.operateur == "==":
-            return int(self.term1.compute()) == int(self.term2.compute())
+            return t1 == t2
         elif self.operateur == "<":
-            return int(self.term1.compute()) <  int(self.term2.compute())
+            return t1 <  t2
         elif self.operateur == ">":
-            return int(self.term1.compute()) >  int(self.term2.compute())
+            return t1 >  t2
         elif self.operateur == "!=":
-            return int(self.term1.compute()) != int(self.term2.compute())
+            return t1 != t2
         elif self.operateur == "<=":
-            return int(self.term1.compute()) <= int(self.term2.compute())
+            return t1 <= t2
         elif self.operateur == ">=":
-            return int(self.term1.compute()) >= int(self.term2.compute())
+            return t1 >= t2
         else:
             return False
 
