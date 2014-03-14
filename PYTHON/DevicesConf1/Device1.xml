@@ -1,0 +1,25 @@
+<xml>
+    <Device version="12" name="Device1">
+        <DeviceCommand name="d" negated="false" ref_cmd="1">
+            <DeviceParameter name="a" ref_param="101">
+                <Value>0</Value>
+            </DeviceParameter>
+			<DeviceParameter name="b" ref_param="102">
+                <Value>3</Value>
+            </DeviceParameter>
+        </DeviceCommand>
+        <DeviceCommand name="d" negated="false" ref_cmd="1">
+            <DeviceParameter name="a" ref_param="101">
+                <Value>-1</Value>
+            </DeviceParameter>
+			<DeviceParameter name="b" ref_param="102">
+                <Value>4</Value>
+            </DeviceParameter>
+        </DeviceCommand>
+		<DeviceCommand name="e" negated="false" ref_cmd="2">
+            <DeviceParameter name="c" ref_param="103">
+                <Value>3</Value>
+            </DeviceParameter>
+		</DeviceCommand>
+    </Device>
+</xml>

@@ -20,8 +20,9 @@ def main():
     iosReference = IOSReference(minidom.parse('IOSRef_AlgoValidation.xml'))
 
     #Loading devices connected to the network
-    device1 = Device(minidom.parse('Device1_AlgoValidation.xml'), iosReference)
-    device2 = Device(minidom.parse('Device2_AlgoValidation.xml'), iosReference)
+    # USING Configuration #1 : 2 devices
+    device1 = Device(minidom.parse('DevicesConf1/Device1.xml'), iosReference)
+    device2 = Device(minidom.parse('DevicesConf1/Device2.xml'), iosReference)
 
 
     print "\n**   Building validation tree for formula #2:    For all d=x : For all d=x, a=y : For all d=x, b=z : y<z \n"

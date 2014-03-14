@@ -20,8 +20,12 @@ def main():
     iosReference = IOSReference(minidom.parse('IOSRef_AlgoValidation.xml'))
 
     #Loading devices connected to the network
-    device1 = Device(minidom.parse('Device1_AlgoValidation.xml'), iosReference)
-    device2 = Device(minidom.parse('Device2_AlgoValidation.xml'), iosReference)
+    # USING Configuration #2 : 5 devices
+    device1 = Device(minidom.parse('DevicesConf1/Device1.xml'), iosReference)
+    device2 = Device(minidom.parse('DevicesConf1/Device2.xml'), iosReference)
+    device3 = Device(minidom.parse('DevicesConf2/Device3.xml'), iosReference)
+    device4 = Device(minidom.parse('DevicesConf2/Device4.xml'), iosReference)
+    device5 = Device(minidom.parse('DevicesConf2/Device5.xml'), iosReference)
 
 
     print "\n**   Building validation tree for formula #3:    Exists d=x : Exists d=x, a=y : Exists d=x, b=z : y=0 ^ z=3 \n"
@@ -49,6 +53,9 @@ def main():
     central = CentralValidation()
     central.addDevice(device1)
     central.addDevice(device2)
+   # central.addDevice(device3)
+   # central.addDevice(device4)
+   # central.addDevice(device5)
 
     #aliases x, y, z in the nodes
     aliasX = Alias("x")
