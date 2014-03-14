@@ -1,5 +1,5 @@
 <xml>
-    <Device version="12" name="Device2">
+    <Device version="12" name="Device4">
         <DeviceCommand name="d" negated="false" ref_cmd="1">
             <DeviceParameter name="a" ref_param="101">
                 <Value>3</Value>
