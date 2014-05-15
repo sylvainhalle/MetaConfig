@@ -1,20 +1,8 @@
-#-------------------------------------------------------------------------------
-# Name:        CentralValidation
-# Purpose:
-#
-# Author:      Sylvain
-#
-# Created:     26/02/2014
-# Copyright:   (c) Sylvain 2014
-# Licence:     <your licence>
-#-------------------------------------------------------------------------------
 import copy
 
 
+
 class CentralValidation(object):
-    '''
-    Rules validation central
-    '''
     def __init__(self, interdependancies = []):
         self.devices = []
         self.logicFormulaTrees = []

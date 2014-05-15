@@ -1,16 +1,4 @@
-#-------------------------------------------------------------------------------
-# Name:        GenericCommand
-# Classes:     GenericCommand, AuxiliarCommand, GenericParameter
-# Purpose:     IOSReference
-#
-# Author:      Sylvain
-#
-# Created:     09/12/2013
-# Copyright:   (c) Sylvain 2013
-# Licence:     UQAC
-#-------------------------------------------------------------------------------
-from CiscoCommandsVersion import *
-
+from CiscoCommandsVersion import CiscoCommandsVersion
 
 class AuxiliarCommand:
     def __init__(self, xmlNode, versionMin=None, versionMax=None, genericCommandNeeded=None):
@@ -22,9 +10,6 @@ class AuxiliarCommand:
             self.versionMin = xmlNode.attributes['versionMin'].value
             self.versionMax = xmlNode.attributes['versionMax'].value
             self.genericCommandNeeded = xmlNode.attributes['guid'].value
-
-        #from IOSReference import printLog
-        #printLog("Created "+self.__str__())
 
 
     def __str__(self):
@@ -44,9 +29,6 @@ class GenericParameter:
         else:
             self.uid = xmlNode.attributes['uid'].value
             self.name = xmlNode.attributes['name'].value
-
-        #from IOSReference import printLog
-        #printLog("Created "+self.__str__())
 
 
     def __str__(self):
@@ -84,8 +66,6 @@ class GenericCommand:
                 auxiliarCommand = AuxiliarCommand(node)
                 self.addAuxiliarCommand(auxiliarCommand)
 
-        #from IOSReference import printLog
-        #printLog("Created "+self.__str__())
 
 
     def addCiscoCommandsVersion(self, ciscoCommandsVersion):

@@ -1,15 +1,3 @@
-#-------------------------------------------------------------------------------
-# Name:        AtomicTerm
-# Classes:     SyntaxTerm, AtomicTerm, CiscoParameter, CiscoKeyword, TermOrTerm, ListOptionItem
-# Purpose:     IOSReference
-#
-# Author:      Sylvain
-#
-# Created:     09/12/2013
-# Copyright:   (c) Sylvain 2013
-# Licence:     UQAC
-#-------------------------------------------------------------------------------
-
 class AtomicTerm:
     def __init__(self):
         pass
@@ -49,6 +37,8 @@ class SyntaxTerm:
 
     def __str__(self):
         return "SyntaxTerm [cardinalityMin="+str(self.cardinalityMin)+", cardinalityMax="+str(self.cardinalityMax)+", number_of_atomic_terms="+str(self.atomicTermList.__len__())+"]"
+
+
 
 
 

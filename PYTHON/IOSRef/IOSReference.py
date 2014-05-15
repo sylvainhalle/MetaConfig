@@ -1,14 +1,4 @@
-#-------------------------------------------------------------------------------
-# Name:        IOSReference
-# Purpose:     IOSReference
-#
-# Author:      Sylvain
-#
-# Created:     09/12/2013
-# Copyright:   (c) Sylvain 2013
-# Licence:     UQAC
-#-------------------------------------------------------------------------------
-from GenericCommand import *
+from GenericCommand import GenericCommand
 
 def printLog(text):
     print "* [IOSReference]   "+str(text)
@@ -21,7 +11,6 @@ class IOSReference:
         self.loadAllXML(xmldoc)
 
 
-
     def loadAllXML(self, xmldoc):
         iosRef = xmldoc.getElementsByTagName('IOSReference')[0]
         self.lastUpdate = iosRef.attributes['lastUpdate'].value
@@ -30,7 +19,6 @@ class IOSReference:
         for node in allGenericCommands:
             genericCommand = GenericCommand(node)
             self.addGenericCommand(genericCommand)
-
         printLog("Successfully loaded "+self.__str__())
 
 
@@ -39,5 +27,8 @@ class IOSReference:
             self.genericCommandList.append(genericCommand)
 
     def __str__(self):
-        return "IOSReference [lastUpdate="+str(self.lastUpdate)+", number_of_generic_commands="+str(self.genericCommandList.__len__())+"]"
+        result = "IOSReference [lastUpdate="+str(self.lastUpdate)+", number_of_generic_commands="+str(self.genericCommandList.__len__())+"]"
+        for gc in self.genericCommandList:
+            result += "   "+gc.__str__()+"\n"
+        return result
 

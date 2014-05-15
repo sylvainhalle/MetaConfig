@@ -1,14 +1,4 @@
-#-------------------------------------------------------------------------------
-# Name:        Device
-# Purpose:     Device
-#
-# Author:      Sylvain
-#
-# Created:     09/12/2013
-# Copyright:   (c) Sylvain 2013
-# Licence:     UQAC
-#-------------------------------------------------------------------------------
-from DeviceCommand import *
+from DeviceCommand import DeviceCommand
 
 def printLog(text):
     print "* [Device]   "+str(text)
@@ -24,8 +14,6 @@ class Device:
 
 
     def loadAllXML(self, xmldoc):
-
-
         iosRef = xmldoc.getElementsByTagName('Device')[0]
         self.name = iosRef.attributes['name'].value
 
@@ -41,9 +29,9 @@ class Device:
         if (isinstance(deviceCommand, DeviceCommand)):
             self.deviceCommandList.append(deviceCommand)
 
-    def toString(self):
+    def __str__(self):
         result = "Device [name="+str(self.name)+", number_of_device_commands="+str(self.deviceCommandList.__len__())+"]\n"
         for dc in self.deviceCommandList:
-            result += "   "+dc.toString()+"\n"
+            result += "   "+dc.__str__()+"\n"
         return result
 

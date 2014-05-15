@@ -1,12 +1,8 @@
-'''
-Created on 8 fevr. 2014
+from Device.Device import Device
+from Device.DeviceCommand import DeviceCommand
+from Device.DeviceParameter import DeviceParameter
 
-@author: Clement
-'''
-from Device import *
-import copy
-
-class Node(object):
+class NeutralNode(object):
     '''
     Abstract node in the evaluation tree
     '''
@@ -44,15 +40,15 @@ class Node(object):
         childsCopy = []
         for child in self.childs:
             childsCopy.append(child.copy())
-        if isinstance(self, NodeAnd):
-            nodeCopy = NodeAnd(self.uidParamOrCommand, childsCopy, self.conditions, self.alias)
-        elif isinstance(self, NodeOr):
-            nodeCopy = NodeOr(self.uidParamOrCommand, childsCopy, self.conditions, self.alias)
+        if isinstance(self, ForAllNode):
+            nodeCopy = ForAllNode(self.uidParamOrCommand, childsCopy, self.conditions, self.alias)
+        elif isinstance(self, ExistsNode):
+            nodeCopy = ExistsNode(self.uidParamOrCommand, childsCopy, self.conditions, self.alias)
         else:
-            nodeCopy = Node(self.uidParamOrCommand, childsCopy, self.conditions, self.alias, self.computedValue)
+            nodeCopy = NeutralNode(self.uidParamOrCommand, childsCopy, self.conditions, self.alias, self.computedValue)
         return nodeCopy
 
-    # parent is the parent Node of this node (useful for adding brothers to this node). It can also be the FormulaTree itself.
+    # parent is the parent NeutralNode of this node (useful for adding brothers to this node). It can also be the FormulaTree itself.
     # deviceNode can be the device itself (if we are at the level of the root) or a DeviceCommand
     # this fonction browses the elements under the deviceNode, looking for uids matching this 'uidParamOrCommand'
     def valuate(self, parent, deviceNode):
@@ -122,15 +118,15 @@ class Node(object):
         return result
 
     def __str__(self):
-        return "Node: uidParamOrCommand=" + str(self.uidParamOrCommand)
+        return "NeutralNode: uidParamOrCommand=" + str(self.uidParamOrCommand)
 
 
 
 
 
-class NodeAnd(Node):
+class ForAllNode(NeutralNode):
     def __init__(self, uidParamOrCommand, childrens = [], conditions = [], alias = None):
-        Node.__init__(self, uidParamOrCommand, childrens, conditions, alias)
+        NeutralNode.__init__(self, uidParamOrCommand, childrens, conditions, alias)
 
     def compute(self):
         result = True
@@ -138,19 +134,19 @@ class NodeAnd(Node):
             result = child.compute() and result     #it's an "AND" node, so ALL childs must be verified
 
         if result:
-            return Node.compute(self)     #If childrens are verified, we can verify conditions attached to this node
+            return NeutralNode.compute(self)     #If childrens are verified, we can verify conditions attached to this node
         else:
             return False
 
     def __str__(self):
-        return "NodeAnd: uidParamOrCommand=" + str(self.uidParamOrCommand)
+        return "ForAllNode: uidParamOrCommand=" + str(self.uidParamOrCommand)
 
 
 
 
-class NodeOr(Node):
+class ExistsNode(NeutralNode):
     def __init__(self, uidParamOrCommand, childrens, conditions = [], alias = None):
-        Node.__init__(self, uidParamOrCommand, childrens, conditions, alias)
+        NeutralNode.__init__(self, uidParamOrCommand, childrens, conditions, alias)
 
     def compute(self):
         result = False
@@ -158,9 +154,9 @@ class NodeOr(Node):
             result = child.compute() or result     #it's an "OR" node, one child is enough to verify this node
 
         if result:
-            return Node.compute(self)    #If childrens are verified, we can verify conditions attached to this node
+            return NeutralNode.compute(self)    #If childrens are verified, we can verify conditions attached to this node
         else:
             return False
 
     def __str__(self):
-        return "NodeOr: uidParamOrCommand=" + str(self.uidParamOrCommand)
+        return "ExistsNode: uidParamOrCommand=" + str(self.uidParamOrCommand)

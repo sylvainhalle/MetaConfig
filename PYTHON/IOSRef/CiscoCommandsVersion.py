@@ -1,15 +1,4 @@
-#-------------------------------------------------------------------------------
-# Name:        CiscoCommandsVersion
-# Classes:     CiscoCommandsVersion, CiscoSyntax
-# Purpose:     IOSReference
-#
-# Author:      Sylvain
-#
-# Created:     09/12/2013
-# Copyright:   (c) Sylvain 2013
-# Licence:     UQAC
-#-------------------------------------------------------------------------------
-from Term import *
+from Term import SyntaxTerm
 
 class CiscoCommandsVersion:
     def __init__(self, xmlNode, versionMin=None, versionMax=None, deviceType=None):

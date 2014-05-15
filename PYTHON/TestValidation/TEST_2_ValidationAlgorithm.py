@@ -1,28 +1,21 @@
-'''
-Created on 8 fevr. 2014
-
-@author: Sylvain STOESEL & Clement PARISOT
-Building a validation tree - Formula test #2
-'''
-
 from xml.dom import minidom
-from IOSRef import *
-from Node import *
-from Conditions import *
-from Terms import *
-from CentralValidation import *
-from Device import *
+from IOSRef import IOSReference
+from Validation.Node import NeutralNode, ForAllNode
+from Validation.Conditions import Condition, Alias
+from Validation.Terms import AtomicAliasTerm
+from Validation.CentralValidation import CentralValidation, LogicFormulaTree
+from Device import Device
 
 def main():
     print "***           START              ***\n"
 
     #Loading IOS Reference (ALL commands and parameters available in a device, i.e. documentation)
-    iosReference = IOSReference(minidom.parse('IOSRef_AlgoValidation.xml'))
+    iosReference = IOSReference(minidom.parse('../TestFiles/IOSRef_AlgoValidation.xml'))
 
     #Loading devices connected to the network
     # USING Configuration #1 : 2 devices
-    device1 = Device(minidom.parse('DevicesConf1/Device1.xml'), iosReference)
-    device2 = Device(minidom.parse('DevicesConf1/Device2.xml'), iosReference)
+    device1 = Device(minidom.parse('../TestFiles/DevicesConf1/Device1.xml'), iosReference)
+    device2 = Device(minidom.parse('../TestFiles/DevicesConf1/Device2.xml'), iosReference)
 
 
     print "\n**   Building validation tree for formula #2:    For all d=x : For all d=x, a=y : For all d=x, b=z : y<z \n"
@@ -65,10 +58,10 @@ def main():
     condition1.setTerms(AtomicAliasTerm(aliasY), AtomicAliasTerm(aliasZ))
 
     #nodes
-    node4 = Node(uid_b, [], [], aliasZ)     #neutral
-    node3 = Node(uid_a, [], [], aliasY)     #neutral
-    node2 = NodeAnd(uid_d, [node3, node4], [condition1], aliasX)     #condition y<z
-    node1 = NodeAnd(0, [node2], [], None)           #no conditions and no aliases
+    node4 = NeutralNode(uid_b, [], [], aliasZ)     #neutral
+    node3 = NeutralNode(uid_a, [], [], aliasY)     #neutral
+    node2 = ForAllNode(uid_d, [node3, node4], [condition1], aliasX)     #condition y<z
+    node1 = ForAllNode(0, [node2], [], None)           #no conditions and no aliases
 
     #Formula tree
     logicFormulaTree = LogicFormulaTree([node1]) #just one node at root

@@ -1,18 +1,4 @@
-#-------------------------------------------------------------------------------
-# Name:        Terms
-# Purpose:
-#
-# Author:      Sylvain
-#
-# Created:     26/02/2014
-# Copyright:   (c) Sylvain 2014
-# Licence:     <your licence>
-#-------------------------------------------------------------------------------
-
 class AbstractTerm(object):
-    '''
-    Abstract Term
-    '''
     def compute(self):
         #print "Compute the node..."
         return 0
@@ -20,9 +6,6 @@ class AbstractTerm(object):
 
 
 class AtomicAliasTerm(AbstractTerm):
-    '''
-    Term corresponding to an alias (i.e. temporary variable like x, y, z...)
-    '''
     def __init__(self, alias):
         self.alias = alias
 
@@ -36,9 +19,6 @@ class AtomicAliasTerm(AbstractTerm):
 
 
 class AtomicConstantTerm(AbstractTerm):
-    '''
-    Term corresponding to a constant value (0, 1, ...)
-    '''
     def __init__(self, constant):
         self.constant = constant
 
@@ -48,10 +28,9 @@ class AtomicConstantTerm(AbstractTerm):
     def compute(self):
         return self.constant
 
+
+
 class Term(AbstractTerm):
-    '''
-    Term
-    '''
     def __init__(self, operator, term1 = None, term2 = None):
         self.operator = operator
         self.term1 = term1

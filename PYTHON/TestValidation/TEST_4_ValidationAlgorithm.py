@@ -1,36 +1,29 @@
-'''
-Created on 8 fevr. 2014
-
-@author: Sylvain STOESEL & Clement PARISOT
-Building a validation tree - Formula test #4
-'''
-
 from xml.dom import minidom
-from IOSRef import *
-from Node import *
-from Conditions import *
-from Terms import *
-from CentralValidation import *
-from Device import *
+from IOSRef import IOSReference
+from Validation.Node import NeutralNode, ExistsNode, ForAllNode
+from Validation.Conditions import Condition, Alias
+from Validation.Terms import AtomicAliasTerm, AtomicConstantTerm
+from Validation.CentralValidation import CentralValidation, LogicFormulaTree
+from Device import Device
 
 def main():
     print "***           START              ***\n"
 
     #Loading IOS Reference (ALL commands and parameters available in a device, i.e. documentation)
-    iosReference = IOSReference(minidom.parse('IOSRef_AlgoValidation.xml'))
+    iosReference = IOSReference(minidom.parse('../TestFiles/IOSRef_AlgoValidation.xml'))
 
     #Loading devices connected to the network
     # USING Configuration #3 : 10 devices
-    device1 = Device(minidom.parse('DevicesConf3/Device1.xml'), iosReference)
-    device2 = Device(minidom.parse('DevicesConf3/Device2.xml'), iosReference)
-    device3 = Device(minidom.parse('DevicesConf3/Device3.xml'), iosReference)
-    device4 = Device(minidom.parse('DevicesConf3/Device4.xml'), iosReference)
-    device5 = Device(minidom.parse('DevicesConf3/Device5.xml'), iosReference)
-    device6 = Device(minidom.parse('DevicesConf3/Device6.xml'), iosReference)
-    device7 = Device(minidom.parse('DevicesConf3/Device7.xml'), iosReference)
-    device8 = Device(minidom.parse('DevicesConf3/Device8.xml'), iosReference)
-    device9 = Device(minidom.parse('DevicesConf3/Device9.xml'), iosReference)
-    device10 = Device(minidom.parse('DevicesConf3/Device10.xml'), iosReference)
+    device1 = Device(minidom.parse('../TestFiles/DevicesConf3/Device1.xml'), iosReference)
+    device2 = Device(minidom.parse('../TestFiles/DevicesConf3/Device2.xml'), iosReference)
+    device3 = Device(minidom.parse('../TestFiles/DevicesConf3/Device3.xml'), iosReference)
+    device4 = Device(minidom.parse('../TestFiles/DevicesConf3/Device4.xml'), iosReference)
+    device5 = Device(minidom.parse('../TestFiles/DevicesConf3/Device5.xml'), iosReference)
+    device6 = Device(minidom.parse('../TestFiles/DevicesConf3/Device6.xml'), iosReference)
+    device7 = Device(minidom.parse('../TestFiles/DevicesConf3/Device7.xml'), iosReference)
+    device8 = Device(minidom.parse('../TestFiles/DevicesConf3/Device8.xml'), iosReference)
+    device9 = Device(minidom.parse('../TestFiles/DevicesConf3/Device9.xml'), iosReference)
+    device10 = Device(minidom.parse('../TestFiles/DevicesConf3/Device10.xml'), iosReference)
 
 
     print "\n**   Building validation tree for formula #4:    Exists d=x : Exists d=x, a=y : For all e=w : For all e=w, c=z : y=-1 ^ z=3 \n"
@@ -94,12 +87,12 @@ def main():
     condition2.setTerms(AtomicAliasTerm(aliasZ), AtomicConstantTerm(3))
 
     #nodes
-    node6 = Node(uid_c, [], [condition2], aliasZ)
-    node5 = Node(uid_a, [], [condition1], aliasY)
-    node4 = NodeAnd(uid_e, [node6], [], aliasW)
-    node3 = NodeOr(uid_d, [node5], [], aliasX)
-    node2 = NodeAnd(0, [node4], [], None)
-    node1 = NodeOr(0, [node3], [], None)
+    node6 = NeutralNode(uid_c, [], [condition2], aliasZ)
+    node5 = NeutralNode(uid_a, [], [condition1], aliasY)
+    node4 = ForAllNode(uid_e, [node6], [], aliasW)
+    node3 = ExistsNode(uid_d, [node5], [], aliasX)
+    node2 = ForAllNode(0, [node4], [], None)
+    node1 = ExistsNode(0, [node3], [], None)
 
     #Formula tree
     logicFormulaTree = LogicFormulaTree([node1, node2]) #two nodes at root

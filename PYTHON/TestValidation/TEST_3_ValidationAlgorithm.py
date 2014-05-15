@@ -1,31 +1,24 @@
-'''
-Created on 8 fevr. 2014
-
-@author: Sylvain STOESEL & Clement PARISOT
-Building a validation tree - Formula test #3
-'''
-
 from xml.dom import minidom
-from IOSRef import *
-from Node import *
-from Conditions import *
-from Terms import *
-from CentralValidation import *
-from Device import *
+from IOSRef import IOSReference
+from Validation.Node import NeutralNode, ExistsNode
+from Validation.Conditions import Condition, Alias
+from Validation.Terms import AtomicAliasTerm, AtomicConstantTerm
+from Validation.CentralValidation import CentralValidation, LogicFormulaTree
+from Device import Device
 
 def main():
     print "***           START              ***\n"
 
     #Loading IOS Reference (ALL commands and parameters available in a device, i.e. documentation)
-    iosReference = IOSReference(minidom.parse('IOSRef_AlgoValidation.xml'))
+    iosReference = IOSReference(minidom.parse('../TestFiles/IOSRef_AlgoValidation.xml'))
 
     #Loading devices connected to the network
     # USING Configuration #2 : 5 devices
-    device1 = Device(minidom.parse('DevicesConf1/Device1.xml'), iosReference)
-    device2 = Device(minidom.parse('DevicesConf1/Device2.xml'), iosReference)
-    device3 = Device(minidom.parse('DevicesConf2/Device3.xml'), iosReference)
-    device4 = Device(minidom.parse('DevicesConf2/Device4.xml'), iosReference)
-    device5 = Device(minidom.parse('DevicesConf2/Device5.xml'), iosReference)
+    device1 = Device(minidom.parse('../TestFiles/DevicesConf1/Device1.xml'), iosReference)
+    device2 = Device(minidom.parse('../TestFiles/DevicesConf1/Device2.xml'), iosReference)
+    device3 = Device(minidom.parse('../TestFiles/DevicesConf2/Device3.xml'), iosReference)
+    device4 = Device(minidom.parse('../TestFiles/DevicesConf2/Device4.xml'), iosReference)
+    device5 = Device(minidom.parse('../TestFiles/DevicesConf2/Device5.xml'), iosReference)
 
 
     print "\n**   Building validation tree for formula #3:    Exists d=x : Exists d=x, a=y : Exists d=x, b=z : y=0 ^ z=3 \n"
@@ -53,9 +46,9 @@ def main():
     central = CentralValidation()
     central.addDevice(device1)
     central.addDevice(device2)
-   # central.addDevice(device3)
-   # central.addDevice(device4)
-   # central.addDevice(device5)
+    central.addDevice(device3)
+    central.addDevice(device4)
+    central.addDevice(device5)
 
     #aliases x, y, z in the nodes
     aliasX = Alias("x")
@@ -75,10 +68,10 @@ def main():
 
 
     #nodes
-    node4 = Node(uid_b, [], [condition2], aliasZ)
-    node3 = Node(uid_a, [], [condition1], aliasY)
-    node2 = NodeOr(uid_d, [node3, node4], [], aliasX)
-    node1 = NodeOr(0, [node2], [], None)
+    node4 = NeutralNode(uid_b, [], [condition2], aliasZ)
+    node3 = NeutralNode(uid_a, [], [condition1], aliasY)
+    node2 = ExistsNode(uid_d, [node3, node4], [], aliasX)
+    node1 = ExistsNode(0, [node2], [], None)
 
     #Formula tree
     logicFormulaTree = LogicFormulaTree([node1]) #just one node at root
