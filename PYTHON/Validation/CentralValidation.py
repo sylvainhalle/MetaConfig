@@ -3,21 +3,28 @@ import copy
 
 
 class CentralValidation(object):
-    def __init__(self, interdependancies = []):
-        self.devices = []
+    def __init__(self):
+        self.device = None
+        self.logicFormula = None
         self.logicFormulaTrees = []
+        self.CCDconditions = []
 
-        self.interdependancies = []
-        for interdep in interdependancies:
-            self.interdependancies.append(interdep)
 
-    def addDevice(self, device):
-        self.devices.append(device)
+    def setDevice(self, device):
+        self.devices = device
 
-    def submitFormula(self, formulaTree):
-        if (self.devices.__len__()>0):
+    def submitFormula(self, logicFormula):
+        #TODO : classes LogicFormul, Quantifier
+        if self.device!=None:  # and isinstance(logicFormula, LogicFormula):
             self.logicFormulaTrees = []
-            formulaTree.setCentral(self)
+            self.CCDconditions = []
+            self.logicFormula = logicFormula
+            
+    def generateTreesWithCCD(self):
+        if self.device==None or self.logicFormula==None:
+            return
+        #TODO: generate trees from formula + find all cross-chain dependencies (CCD) 
+        '''formulaTree.setCentral(self)
             formulaTree.setDevice(self.devices[0])
             self.logicFormulaTrees.append(formulaTree)
             #copy n times the formula, where n = number of devices - 1
@@ -25,9 +32,18 @@ class CentralValidation(object):
                 formulaTreeCopy = formulaTree.getCopy()
                 formulaTreeCopy.setCentral(self)
                 formulaTreeCopy.setDevice(self.devices[i])
-                self.logicFormulaTrees.append(formulaTreeCopy)
+                self.logicFormulaTrees.append(formulaTreeCopy)'''
 
-    def compute(self):
+    def valuateTrees(self):
+        if self.device==None or self.logicFormula==None:
+            return
+        print "* CENTRAL VALIDATION : beginning valuating formula..."
+        for logicFormulaTree in self.logicFormulaTrees:
+            logicFormulaTree.valuate()
+    
+    def computeTrees(self):
+        if self.device==None or self.logicFormula==None:
+            return
         print "* CENTRAL VALIDATION : beginning computing formula..."
         result = True
         for logicFormulaTree in self.logicFormulaTrees:
@@ -35,22 +51,25 @@ class CentralValidation(object):
             print "* CENTRAL VALIDATION : computing result for device '"+logicFormulaTree.device.name+"' : "+str(tmp)
             result &= tmp
         return result
+    
+    def computeCCD(self):
+        if self.device==None or self.logicFormula==None:
+            return
+        #TODO : compute CCD conditions
+        pass
+    
+    def returnComputedTrees(self):
+        return self.CCDconditions
 
-    def valuate(self):
-        for logicFormulaTree in self.logicFormulaTrees:
-            logicFormulaTree.valuate()
-
-    def addInterdependancy(self, interdependancy):
-        self.interdependancies.append(interdependancy)
 
 
     def __str__(self):
         affichage = "Central:\nFormulaTrees:\n"
         for logicFormulaTree in self.logicFormulaTrees:
             affichage += str(logicFormulaTree) +"\n"
-        affichage +="\nDevices:\n"
-        for device in self.devices:
-            affichage += str(device)+"\n"
+        affichage = "CCD Conditions:\n"
+        for ccdcond in self.CCDconditions:
+            affichage += str(ccdcond) +"\n"
         return affichage
 
 

@@ -20,24 +20,6 @@ class Alias(object):
 
 
 
-class Interdependancy(object):
-    def __init__(self, aliasList = [], conditions = []):
-        self.aliasList = []
-        for alias in aliasList:
-            self.aliasList.append(alias)
-        self.conditions = []
-        for condition in conditions:
-            self.conditions.append(condition)
-
-    def __str__(self):
-        aliasNames = ""
-        for alias in self.aliasList:
-            aliasNames += " " + alias.name
-        return "Interdependancy between:" + str(aliasNames)
-
-
-
-
 
 class Condition(object):
     def __init__(self, operator, term1 = None, term2 = None):
