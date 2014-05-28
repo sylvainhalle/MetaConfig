@@ -15,6 +15,8 @@ class DeviceParameter:
         """from IOSReference import printLog
         printLog("Created "+self.toString())"""
 
+    def nbParam(self):
+        return 1
 
     def __str__(self):
         return "DeviceParameter [name='"+str(self.name)+", ref_param="+str(self.ref_param)+", values="+str(self.values)+"]"

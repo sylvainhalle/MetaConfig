@@ -30,6 +30,9 @@ class DeviceCommand:
         if (isinstance(deviceParameterOrCommand, DeviceParameter) | isinstance(deviceParameterOrCommand, DeviceCommand)):
             self.deviceParametersAndCommandsList.append(deviceParameterOrCommand)
 
+    def nbParam(self):
+        return 0
+
     def __str__(self):
         result = "DeviceCommand [ref_cmd="+str(self.ref_cmd)+", name='"+str(self.name)+", negated="+self.negated+"]\n"
         for dpc in self.deviceParametersAndCommandsList:
