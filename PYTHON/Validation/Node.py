@@ -2,6 +2,11 @@ from Device.Device import Device
 from Device.DeviceCommand import DeviceCommand
 from Device.DeviceParameter import DeviceParameter
 
+
+
+COUNT_COMMANDS = True
+NB_VALUATED_NODES = 0
+
 class NeutralNode(object):
     '''
     Abstract node in the evaluation tree
@@ -48,12 +53,17 @@ class NeutralNode(object):
             nodeCopy = NeutralNode(self.uidParamOrCommand, childsCopy, self.conditions, self.alias, self.computedValue)
         return nodeCopy
 
+
+    def getNbValuatedNodes(self):
+        return NB_VALUATED_NODES
+
     # parent is the parent NeutralNode of this node (useful for adding brothers to this node). It can also be the FormulaTree itself.
     # deviceNode can be the device itself (if we are at the level of the root) or a DeviceCommand
     # this fonction browses the elements under the deviceNode, looking for uids matching this 'uidParamOrCommand'
     def valuate(self, parent, deviceNode):
 
         if self.uidParamOrCommand==0:                           #if it's the root
+            NB_VALUATED_NODES = 0
             tmpList = self.childs[:]                            #use a temporary list for the 'foreach' because we will add another nodes to self.childs
             for child in tmpList:
                 child.valuate(self, deviceNode)                 #valuates subNodes (recursive calls)
@@ -82,8 +92,11 @@ class NeutralNode(object):
                     nodeCopy = self.copy()                                  #create a copy of this node
                     if isinstance(devNode, DeviceCommand):
                         nodeCopy.computedValue = None                       #it's a DeviceCommand, so there's no value on it
+                        if COUNT_COMMANDS:
+                            NB_VALUATED_NODES += 1
                     else:
                         nodeCopy.computedValue = devNode.values[0]          #it's a DeviceParameter, so we can valuate this node
+                        NB_VALUATED_NODES += 1
 
                     #if nodeCopy.computedValue!=None:
                     #    print "***VALUATE  computedValue="+str(nodeCopy.computedValue)+" parent:"+str(parent)+" this:"+str(self)
@@ -97,8 +110,11 @@ class NeutralNode(object):
                     thisNodeUsed = True
                     if isinstance(devNode, DeviceCommand):
                         self.computedValue = None                           #it's a DeviceCommand, so there's no value on it
+                        if COUNT_COMMANDS:
+                            NB_VALUATED_NODES += 1
                     else:
                         self.computedValue = devNode.values[0]              #it's a DeviceParameter, so we can valuate this node
+                        NB_VALUATED_NODES += 1
 
                     #if self.computedValue!=None:
                     #    print "***VALUATE  computedValue="+str(self.computedValue)+" parent:"+str(parent)+" this:"+str(self)

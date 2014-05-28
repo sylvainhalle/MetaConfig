@@ -101,7 +101,9 @@ class LogicFormulaTree(object):
         #use a temporary list for the 'foreach' because we will add another nodes to self.nodes
         tmpList = self.nodes[:]
         for node in tmpList:
+            print "Valuating root node..."
             node.valuate(self, self.device)
+            print node.getNbValuatedNodes()+" node(s) valuated."
 
     def compute(self):
         result = True
