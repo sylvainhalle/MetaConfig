@@ -17,34 +17,27 @@ class Alias(object):
     def __str__(self):
         return str(self.name)
 
-class Interdependancy(object):
-    def __init__(self, aliasList = [], conditions = []):
-        self.aliasList = []
-        for alias in aliasList:
-            self.aliasList.append(alias)
-        self.conditions = []
-        for condition in conditions:
-            self.conditions.append(condition)
 
-    def __str__(self):
-        aliasNames = ""
-        for alias in self.aliasList:
-            aliasNames += " " + alias.name
-        return "Interdependancy between:" + str(aliasNames)
 
 
 
 
 
 class Condition(object):
-    def __init__(self, operator, term1 = None, term2 = None):
+    def __init__(self, operator, term1 = None, term2 = None, isCrossChainDependency = False):
         self.operateur = operator
         self.term1 = term1
         self.term2 = term2
+        self.nodesBound = []
+        self.isCrossChainDependency = isCrossChainDependency
 
     def setTerms(self, term1, term2):
         self.term1 = term1
         self.term2 = term2
+        
+    def addNodeBoundToThisCondition(self, node):
+        if not self.nodesBound.__contains__(node):
+            self.nodesBound.append(node)
 
     def compute(self):
         #print "Evaluate", str(self)

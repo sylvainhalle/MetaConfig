@@ -22,6 +22,8 @@ class NeutralNode(object):
         self.conditions = []
         for condition in conditions:
             self.conditions.append(condition)
+            condition.addNodeBoundToThisCondition(self)
+            
         self.alias = alias
         self.computedValue = computedValue
 
