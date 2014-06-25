@@ -1,6 +1,7 @@
 class Alias(object):
-    def __init__(self, name = ""):
+    def __init__(self, name = "", uid = 0):
         self.name = name
+        self.uid = uid
         self.currentValue = None
 
     def setValue(self, currentValue):
@@ -16,6 +17,20 @@ class Alias(object):
     def __str__(self):
         return str(self.name)
 
+class Interdependancy(object):
+    def __init__(self, aliasList = [], conditions = []):
+        self.aliasList = []
+        for alias in aliasList:
+            self.aliasList.append(alias)
+        self.conditions = []
+        for condition in conditions:
+            self.conditions.append(condition)
+
+    def __str__(self):
+        aliasNames = ""
+        for alias in self.aliasList:
+            aliasNames += " " + alias.name
+        return "Interdependancy between:" + str(aliasNames)
 
 
 
